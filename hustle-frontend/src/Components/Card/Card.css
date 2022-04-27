@@ -1,0 +1,39 @@
+.border-color {
+    border: 1px solid #e4e5e7;
+}
+
+.common-color {
+    color: #74767e;
+}
+
+.container-max-width {
+    max-width: 275px;
+}
+
+.title {
+    color: #222325;
+    font-weight: #222325, ;
+    line-height: 22px;
+}
+
+.card-bottum {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e4e5e7;
+}
+
+.starting-at {
+    font-size: 10px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.price {
+    font-size: 18px;
+    line-height: 20px;
+    margin-top: 1px;
+    color: #404145;
+    text-align: right;
+}

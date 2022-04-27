@@ -1,0 +1,57 @@
+"""backend URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from email.mime import base
+from django.contrib import admin
+from rest_framework import routers
+from django.urls import path, include
+from seller.views import SellerView
+from category.views import CategoryView
+from subcategory.views import SubCategoryView
+from services.views import ScopeAndPriceView
+
+
+# create seller
+seller_router = routers.DefaultRouter()
+seller_router.register(r'seller', SellerView)
+
+# create catgegory
+category_router = routers.DefaultRouter()
+category_router.register(r'', CategoryView)
+
+# create subcategory
+sub_category = routers.DefaultRouter()
+sub_category.register(r'', SubCategoryView)
+
+# services = routers.DefaultRouter()
+# services.register(r'', ServicesView, basename="services")
+
+# scope_and_price = routers.DefaultRouter()
+# scope_and_price.register(r'', ScopeAndPriceView, basename="")
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+
+    # path('seller/', include('seller.urls')),
+
+    path('seller/', include(seller_router.urls)),
+    path('category/', include(category_router.urls)),
+    path('subcategory/', include(sub_category.urls)),
+    path('services/', include('services.urls')),
+
+    path('__debug__/', include('debug_toolbar.urls')),
+]
