@@ -8,6 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
+
 class SignUp(APIView):
 
     permission_classes = [AllowAny, ]
@@ -28,19 +29,19 @@ class SignUp(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class LogoutView(APIView):
 
     permission_classes = (AllowAny,)
 
     def post(self, request):
         try:
+            print(request.data["refresh"])
             refresh_token = request.data["refresh"]
             token = RefreshToken(refresh_token)
             token.blacklist()
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_205_RESET_CONTENT)
 
 
 @api_view(['GET'])

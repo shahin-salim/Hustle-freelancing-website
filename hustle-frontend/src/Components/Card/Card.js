@@ -1,22 +1,31 @@
 import { fontSize } from '@mui/system'
 import React from 'react'
 import "./Card.css"
+import { useNavigate } from "react-router-dom"
 
-const Card = () => {
+// card which shows service details
+const Card = ({ discription, id, image1, image2, seller_id, starting_at, sub_category_id, title, user }) => {
+
+    const navigate = useNavigate()
+
+    const { username, profile_image, price } = user;
+
     return (
-        <div className='border-color ' style={{ marginBottom: "15px" }}>
-            <img style={{ width: "100%" }} src="https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/114643305/original/4308b3c70509aa57163a4584bad647114cbc88a9.jpg" alt="" />
+        <div className='border-color ' style={{ marginBottom: "15px" }} onClick={() => navigate(`/service/${id}`)}>
+           
+            <img style={{ width: "100%" }} src={image1} alt="image1" />
+
             <div>
                 <div style={{ padding: "10px" }}>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <img style={{ borderRadius: "50%", width: "25px" }} src="https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/9c0640c1abd0e3705ebc562b9495f4d9-1532250166462/7d93e6f2-f1cc-4a31-9960-25d817ecbe87.png" alt="" />
+                        <img style={{ borderRadius: "50%", width: "25px", height: "25px" }} src={profile_image} alt="" />
                         <span style={{ marginLeft: "15px" }}>
-                            Shahin salim
+                            {username}
                         </span>
                     </div>
                     <div style={{ marginTop: "9px" }}>
                         <span className='title'>
-                            I will make special cartoon mascot character
+                            {discription}
                         </span>
                     </div>
                 </div>
@@ -26,10 +35,11 @@ const Card = () => {
                     </div>
                     <div >
                         <div className='starting-at'>STARTING AT</div>
-                        <div className='price' >$2000</div>
+                        <div className='price' >${price}</div>
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }

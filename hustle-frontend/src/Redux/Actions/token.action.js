@@ -1,6 +1,6 @@
 import axios from "axios"
-import { SET_ACCESS_TOKEN, SET_REFRESH_TOKEN, SET_USER, SET_USER_STATUS } from "../Constants/Token.constance"
-import { LOGOUT_URL, REFRESH_TOKEN_URL } from "../../Urls/Urls"
+import { SET_USER_STATUS } from "../Constants/Token.constance"
+import { LOGOUT_URL, REFRESH_TOKEN_URL } from "../../Utils/Urls"
 
 export const setUserStatus = (status) => async (dispatch, getState) => {
     dispatch({
@@ -13,7 +13,7 @@ export const setUserStatus = (status) => async (dispatch, getState) => {
 export const logoutTheUser = () => async (dispatch, getState) => {
 
     try {
-        const response = await axios.post( LOGOUT_URL, { refresh: localStorage.getItem("refreshToken") })
+        const response = await axios.post(LOGOUT_URL, { refresh: localStorage.getItem("refreshToken") })
         localStorage.removeItem("accessToken")
         localStorage.removeItem("refreshToken")
         console.log(response);

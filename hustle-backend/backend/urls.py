@@ -27,7 +27,7 @@ from services.views import ScopeAndPriceView
 seller_router = routers.DefaultRouter()
 seller_router.register(r'seller', SellerView)
 
-# create catgegory
+# create category
 category_router = routers.DefaultRouter()
 category_router.register(r'', CategoryView)
 

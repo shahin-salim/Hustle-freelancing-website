@@ -11,14 +11,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setAccessToken, setRefreshToken, setUserStatus } from '../Redux/Actions/token.action';
 
 import useAxios from '../Axios/useAxios';
-import { SIGNUP_URL } from '../Urls/Urls';
+import { SIGNUP_URL } from '../Utils/Urls';
 
-const Signup = ({setOpen}) => {
+
+const Signup = ({ setOpen }) => {
     const myAxios = useAxios()               //   custom hook for using axios interceptor
     const dispatch = useDispatch()
     const data = useSelector(state => state)
 
     var validationSchema = Yup.object().shape({
+
         first_name: Yup.string().required("First_name is required").matches(/^\S*$/, "This field should not be blank"),
         last_name: Yup.string().required("Last_name is required").matches(/^\S*$/, "This field should not be blank"),
         username: Yup.string().required("username is required").matches(/^\S*$/, "This field should not be blank"),
@@ -56,8 +58,12 @@ const Signup = ({setOpen}) => {
     const onSubmit = async (data) => {
 
         try {
-            const response = await axios.post(SIGNUP_URL, data)
 
+            // post signup form data to database if the request is success 
+            // set access token and refresh token in the local storage
+            // and set the userStatus state in redux set as True it will indiacate is online
+
+            const response = await axios.post(SIGNUP_URL, data)
             localStorage.setItem("refreshToken", response.data.refresh)
             localStorage.setItem("accessToken", response.data.access)
             setOpen({ bool: false, type: "" })
@@ -65,11 +71,13 @@ const Signup = ({setOpen}) => {
 
         } catch (error) {
 
-            if (error.response.data.password) setError("username", { type: "server", message: error.response.data.username[0] });
-            if (error.response.data.phone_number) setError("phone_number", { type: "server", message: error.response.data.phone_number[0] });
-            if (error.response.data.email) setError("email", { type: "server", message: error.response.data.email[0] })
-            if (error.response.data.password) setError("password", { type: "server", message: error.response.data.password[0] });
-        
+            // set the backend validation error to  hook form 
+
+            const data = error.response.data;
+            if (data.password) setError("username", { type: "server", message: error.response.data.username[0] });
+            if (data.phone_number) setError("phone_number", { type: "server", message: error.response.data.phone_number[0] });
+            if (data.email) setError("email", { type: "server", message: error.response.data.email[0] })
+            if (data.password) setError("password", { type: "server", message: error.response.data.password[0] });
         }
     };
 
@@ -79,11 +87,16 @@ const Signup = ({setOpen}) => {
             <Fragment>
                 <Paper>
                     <Box px={3} py={2} sx={{ borderColor: "primary.main" }} >
-                        <Typography variant="h4" align="center" margin="dense">
-                            {/* {title} */}
-                        </Typography>
+
 
                         <Grid container spacing={1}>
+
+                            <Grid item xs={12} >
+                                <Typography variant="inherit" color="textSecondary">
+                                    {errors.first_name?.message}
+                                </Typography>
+                            </Grid>
+
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     required

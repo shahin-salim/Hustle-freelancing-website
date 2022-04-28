@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { setUserStatusReducer } from "./tokenReducer"
+import { setServiceReducer } from "./servicesReducer";
 
 export const reducer = combineReducers({
-    // accessToken: accessTokenReducer,
-    // refreshToken: refreshTokenReducer,
     userStatus: setUserStatusReducer,
+    services: setServiceReducer
 })

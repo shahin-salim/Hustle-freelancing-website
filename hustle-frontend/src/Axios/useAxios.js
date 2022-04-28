@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
-import { REFRESH_TOKEN_URL } from '../Urls/Urls';
+import { REFRESH_TOKEN_URL } from '../Utils/Urls';
 import jwt_decode from "jwt-decode"
 import dayjs from 'dayjs';
 import { setUserStatus } from '../Redux/Actions/token.action';

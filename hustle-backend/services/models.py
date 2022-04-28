@@ -15,6 +15,8 @@ class Services(models.Model):
     discription = models.TextField()
     sub_category_id = models.ForeignKey(
         SubCategory, on_delete=models.CASCADE)
+    starting_at = models.IntegerField(null=True)
+
 
 
 class ScopeAndPrice(models.Model):
@@ -22,7 +24,6 @@ class ScopeAndPrice(models.Model):
     name_of_the_package = CharField(max_length=100)
     desciption_about_offer = models.TextField()
     delivery_time = models.FloatField()
-    revision = models.PositiveIntegerField()
-    source_code = BooleanField()
     price = models.FloatField()
-    service_id = models.ForeignKey(Services, on_delete=models.CASCADE)
+    service_id = models.ForeignKey(
+        Services, on_delete=models.CASCADE, related_name="service_id")

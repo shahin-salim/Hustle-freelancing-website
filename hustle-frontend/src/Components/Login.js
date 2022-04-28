@@ -16,7 +16,7 @@ import { Paper, Box, Grid, Typography } from "@mui/material";
 import { setUserStatus } from '../Redux/Actions/token.action';
 import DialogContentText from '@mui/material/DialogContentText';
 import { Link } from "react-router-dom"
-import { LOGIN_URL } from '../Urls/Urls';
+import { LOGIN_URL } from '../Utils/Urls';
 
 
 
