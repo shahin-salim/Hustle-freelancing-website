@@ -4,7 +4,7 @@ import Carousel from 'react-bootstrap/Carousel'
 
 
 
-const Carosal = () => {
+const Carosal = ({ image1, image2 }) => {
 
 
     return (
@@ -13,7 +13,7 @@ const Carosal = () => {
             <Carousel.Item interval={3}>
                 <img
                     className="d-block w-100"
-                    src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/Blogimage.png"
+                    src={image1}
                     alt="First slide"
                 />
                 <Carousel.Caption>
@@ -24,7 +24,7 @@ const Carosal = () => {
             <Carousel.Item interval={500}>
                 <img
                     className="d-block w-100"
-                    src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/Blogimage.png"
+                    src={image2}
                     alt="Second slide"
                 />
                 <Carousel.Caption>
@@ -32,17 +32,7 @@ const Carosal = () => {
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </Carousel.Caption>
             </Carousel.Item>
-            <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/Blogimage.png"
-                    alt="Third slide"
-                />
-                <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                </Carousel.Caption>
-            </Carousel.Item>
+
         </Carousel>
 
 

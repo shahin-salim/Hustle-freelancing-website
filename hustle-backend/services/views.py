@@ -109,8 +109,20 @@ class ListAllService(APIView):
 
     permission_classes = (AllowAny,)
 
-    def get(self, request):        
-        queryset = ServicesModelSerialzer(     \
+    def get(self, request):
+        queryset = ServicesModelSerialzer(
             Services.objects.all(), many=True)
 
+        return HTTP_200(queryset.data)
+
+
+class GetService(APIView):
+    """
+    get specifiv service
+    """
+
+    permission_classes = (AllowAny,)
+
+    def get(self, request, pk=None):
+        queryset = ServicesModelSerialzer(Services.objects.get(pk=pk))
         return HTTP_200(queryset.data)

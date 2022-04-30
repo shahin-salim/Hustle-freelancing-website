@@ -1,0 +1,22 @@
+.modify-tabs div div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.align-items-sidebar {
+    margin-top: 2rem;
+}
+
+.price-and-package-name {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px 0 15px;
+}
+
+.become-a-seller-button {
+    padding: 0 22px 0 22px;
+}
+
+.become-a-seller-button button {
+    width: 100%;
+}

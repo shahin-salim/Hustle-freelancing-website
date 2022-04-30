@@ -22,13 +22,3 @@ class SellerView(viewsets.ModelViewSet):
     serializer_class = SellerProfileSerialzer
     queryset = SellerProfile.objects.all()
 
-# class SellerView(APIView):
-
-#     permission_classes = (IsSellerIsAuthorized,)
-
-#     def get(self, request):
-#         user = SellerProfile.objects.get(user_id__username=request.user)
-#         return HTTP_200(SellerProfileSerialzer(user).data)
-
-#     def post(self, request):
-#         SellerProfile(data = {request.data, request.user})
