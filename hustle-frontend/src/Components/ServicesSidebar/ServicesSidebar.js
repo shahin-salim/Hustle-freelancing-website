@@ -9,6 +9,7 @@ import "./ServicesSidebar.css"
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { GET_PACKAGES_OF_SERVICE_URL } from '../../Utils/Urls';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -59,21 +60,8 @@ export default function ServicesSidebar({ id }) {
     };
 
     const fetchPackagesDetails = async () => {
-        // try {
-        //     const [{ data }, { data: packages }] = await Promise.all([
-        //         axios.get(`/services/service/${id}/`),
-        //         axios.get(`/services/scope_and_price/?service_id=${id}`)
-        //     ])
-        //     console.log(data);
-        //     setService(data)
-
-        //     console.log(packages);
-        //     setPackageInfo(packages);
-        // } catch (err) {
-        //     console.log(err.response.data)
-        // }
         try {
-            const { data } = await axios.get(`/services/scope_and_price/?service_id=${id}`)
+            const { data } = await axios.get(`${GET_PACKAGES_OF_SERVICE_URL + id}`)
             setPackageInfo(data)
         } catch (err) {
             console.log(err.response.data)

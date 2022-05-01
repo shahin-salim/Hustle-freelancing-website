@@ -118,7 +118,7 @@ class ListAllService(APIView):
 
 class GetService(APIView):
     """
-    get specifiv service
+    get specific service
     """
 
     permission_classes = (AllowAny,)
