@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { GET_PACKAGES_OF_SERVICE_URL } from '../../Utils/Urls';
+import { useNavigate } from 'react-router-dom';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -54,6 +55,8 @@ export default function ServicesSidebar({ id }) {
     const [value, setValue] = React.useState(0);
 
 
+    const navigate = useNavigate()
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -91,7 +94,7 @@ export default function ServicesSidebar({ id }) {
 
             {
                 packageInfo.map((data, index) =>
-                    <TabPanel value={value} index={index}>
+                    <TabPanel value={value} index={index} key={data.id}>
                         <div className='align-items-sidebar price-and-package-name' >
                             <span>{data.type}</span>
                             <h4 style={{ fontWeight: "bold" }}>₹{data.price}</h4>
@@ -109,7 +112,7 @@ export default function ServicesSidebar({ id }) {
 
 
             <div className='become-a-seller-button'>
-                <Button variant="dark">Contact seller</Button>
+                <Button variant="dark" onClick={() => navigate("/chat")}>Contact seller</Button>
             </div>
         </Box>
     );

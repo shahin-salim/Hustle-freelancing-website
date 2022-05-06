@@ -35,14 +35,6 @@ const Carosal = ({ image1, image2 }) => {
 
         </Carousel>
 
-
-
-
-
-
-
-
-
     )
 }
 

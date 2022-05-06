@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'subcategory',
     'cloudinary',
     'debug_toolbar',
+    'chatapp'
 ]
 
 MIDDLEWARE = [
