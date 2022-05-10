@@ -49,13 +49,12 @@ const Signup = ({ open, setOpen }) => {
 
     const onSubmit = async (data) => {
         try {
-
             const response = await axios.post(LOGIN_URL, data)
             localStorage.setItem("refreshToken", response.data.refresh)
             localStorage.setItem("accessToken", response.data.access)
             setOpen({ bool: false, type: "" })
             dispatch(setUserStatus(true))
-            
+
         } catch (error) {
             setLoginError(error.response.data.detail);
         }

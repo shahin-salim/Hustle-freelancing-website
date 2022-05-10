@@ -5,6 +5,7 @@
     overflow-y: scroll;
 }
 
+
 .each-profile {
     display: flex;
     align-items: center;
@@ -12,4 +13,15 @@
     background-color: #e5f8e6;
     border-top: 1px solid #e4e5e7;
     border-bottom: 1px solid #e4e5e7;
+}
+
+.each-profile :hover {
+    cursor: pointer;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .contacts-style {
+        width: 100%;
+    }
 }

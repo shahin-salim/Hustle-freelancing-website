@@ -1,14 +1,14 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import { reducer } from "./Reducer/Index";
 import thunk from 'redux-thunk'
+import { decodeJwtToken } from "../Utils/decode.jwt";
 // import { composeWithDevTools } from "redux-devtools-extension";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const isUserActive = localStorage.getItem('refreshToken') ? true : false
 
 const initialState = {
-    userStatus: isUserActive,
+    userStatus: decodeJwtToken(),
 }
 
 const store = createStore(

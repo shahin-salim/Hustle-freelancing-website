@@ -8,12 +8,16 @@ import Button from "react-bootstrap/Button";
 import "./ServicesSidebar.css"
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { GET_PACKAGES_OF_SERVICE_URL } from '../../Utils/Urls';
 import { useNavigate } from 'react-router-dom';
+import { addToContact } from '../../Redux/Actions/Chat.Actions';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
+
+
+
 
     return (
         <div
@@ -48,15 +52,16 @@ function a11yProps(index) {
 }
 
 export default function ServicesSidebar({ id }) {
-    console.log(id);
 
-
-    const [packageInfo, setPackageInfo] = useState([])
-    const [value, setValue] = React.useState(0);
-
-
+    const dispatch = useDispatch();
     const navigate = useNavigate()
+    const [value, setValue] = React.useState(0);
+    const [packageInfo, setPackageInfo] = useState([])
 
+    const handleNavigate = () => {
+        // dispatch(addToContact())
+        navigate("/chat")
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -72,12 +77,8 @@ export default function ServicesSidebar({ id }) {
     }
 
 
-    console.log(packageInfo);
-
     useEffect(() => {
-
         fetchPackagesDetails()
-
     }, [])
 
 
@@ -112,7 +113,7 @@ export default function ServicesSidebar({ id }) {
 
 
             <div className='become-a-seller-button'>
-                <Button variant="dark" onClick={() => navigate("/chat")}>Contact seller</Button>
+                <Button variant="dark" onClick={handleNavigate}>Contact seller</Button>
             </div>
         </Box>
     );

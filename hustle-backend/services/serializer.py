@@ -31,7 +31,8 @@ class ServicesModelSerialzer(serializers.ModelSerializer):
         return {
             "username": obj.seller_id.user_id.username,
             "profile_image": "https://res.cloudinary.com/dkezigu54/image/upload/v1/ProductImage/Screenshot_from_2022-04-21_11-50-52_tgr83p",
-            "price": price
+            "price": price,
+            "id": obj.seller_id.user_id.id
         }
 
 

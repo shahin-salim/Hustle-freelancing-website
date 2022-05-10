@@ -1,0 +1,13 @@
+export const SET_MESSEGES = "SET_MESSEGES"
+
+export const SET_SOCKET_IO = "SET_SOCKET_IO"
+
+export const SET_CONTACTS = "SET_CONTACTS"
+
+export const LISTENING_TO_REPLAY = "LISTEN_TO_THIS_USER"
+
+export const MESSAGES = "MESSAGES"
+
+export const SEND_MESSAGES = "SEND_MESSAGES"
+
+export const RECEIVED_MESSAGES = "RECEIVED_MESSAGES"

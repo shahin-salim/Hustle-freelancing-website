@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+import json
+from services.models import ScopeAndPrice
 
 
 class SignUp(APIView):
@@ -42,6 +44,43 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except:
             return Response(status=status.HTTP_205_RESET_CONTENT)
+
+
+#
+class GetUsers(APIView):
+    """
+    get the user details
+    """
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        data = dict(request.GET)
+        print(data["users"])
+        queryset = CustomUser.objects.filter(id__in=data['users'])
+
+        print(queryset)
+
+        serialzer = CustomUserSerializer(queryset, many=True).data
+
+        return Response(serialzer, status=status.HTTP_200_OK)
+
+
+# class GetUsersUsingSellerId(APIView):
+#     """
+#     get the user details
+#     """
+#     permission_classes = (AllowAny,)
+
+#     def get(self, request):
+
+#         queryset = ScopeAndPrice.objects.filter(id=request.GET["id"]).values(
+#             "service_id__seller_id__user_id__username",
+#             "service_id__seller_id__user_id",
+#         )
+
+#         print(queryset)
+
+#         return Response(serialzer, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

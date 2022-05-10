@@ -32,7 +32,6 @@ const useTheAxios = () => {
                 localStorage.setItem("refreshToken", response.data.refresh)
                 config.headers.Authorization = `Bearer ${response.data.access}`
             } catch (err) {
-                console.log(err.response.data + "login")
                 localStorage.removeItem("accessToken")
                 localStorage.removeItem("refreshToken")
                 dispatch(setUserStatus(false))

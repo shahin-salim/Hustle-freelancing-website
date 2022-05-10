@@ -12,7 +12,7 @@ const Card = ({ discription, id, image1, image2, seller_id, starting_at, sub_cat
 
     return (
         <div className='border-color ' style={{ marginBottom: "15px" }} onClick={() => navigate(`/service/${id}`)}>
-           
+
             <img style={{ width: "100%" }} src={image1} alt="image1" />
 
             <div>
@@ -25,7 +25,7 @@ const Card = ({ discription, id, image1, image2, seller_id, starting_at, sub_cat
                     </div>
                     <div style={{ marginTop: "9px" }}>
                         <span className='title'>
-                            {discription}
+                            {title}
                         </span>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import ServiceDetailsBody from '../Components/ServiceDetailsBody/ServiceDetailsB
 import Footer from '../Components/Footer/Footer'
 
 const ProductDetail = () => {
+
     return (
         <div>
             <Header />

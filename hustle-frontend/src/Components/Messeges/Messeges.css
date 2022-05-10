@@ -25,10 +25,7 @@
 }
 
 @media only screen and (max-width: 750px) {
-    .contacts-style {
-      width: 100%;
+    .messeges-style {
+        width: 100%;
     }
-    .messeges-style{
-        display: none;
-    }
-  }
+}

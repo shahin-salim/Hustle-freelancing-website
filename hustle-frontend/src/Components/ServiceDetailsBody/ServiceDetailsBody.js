@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Rating from "../Rating"
 import Carosal from '../Carosal'
@@ -8,6 +8,8 @@ import ProfilePicture from '../ProfilePicture';
 import Container from 'react-bootstrap/Container';
 import { GET_SERVICE_URL } from '../../Utils/Urls';
 import ServicesSidebar from '../ServicesSidebar/ServicesSidebar';
+import { useDispatch } from 'react-redux';
+import { servicesUser } from '../../Redux/Actions/socket.actions';
 
 const ServiceDetailsBody = () => {
     const [service, setService] = useState({})
@@ -16,12 +18,18 @@ const ServiceDetailsBody = () => {
 
     const { id } = useParams()
 
+    const dispatch = useDispatch()
+
     // Get service details
     const fetchService = async () => {
         try {
             const { data } = await axios.get(`${GET_SERVICE_URL + id}/`)
             setService(data)
             setUser(data.user)
+            console.log(data);
+            console.log(data.user);
+            dispatch(servicesUser(data.user))
+
         } catch (err) {
             console.log(err.response)
         }

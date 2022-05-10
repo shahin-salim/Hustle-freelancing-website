@@ -12,7 +12,8 @@ const Home = () => {
 
     useEffect(() => {
 
-        dispatch(fetchServices())   // Fetch all the services on load using redux
+        // Fetch all the services on load using redux
+        dispatch(fetchServices())
 
     }, [])
 
