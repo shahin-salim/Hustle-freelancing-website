@@ -62,6 +62,7 @@ const Signup = ({ setOpen }) => {
             // post signup form data to database if the request is success 
             // set access token and refresh token in the local storage
             // and set the userStatus state in redux set as True it will indiacate is online
+            
             const response = await axios.post(SIGNUP_URL, data)
             localStorage.setItem("refreshToken", response.data.refresh)
             localStorage.setItem("accessToken", response.data.access)
