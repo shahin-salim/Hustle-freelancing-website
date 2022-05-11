@@ -1,0 +1,43 @@
+.create-an-offer-main-div {
+    max-width: 608px;
+
+}
+
+.all-services {
+    padding: 10px;
+
+}
+
+.CreateAnoffer-services {
+    display: flex;
+    margin: 15px;
+    border: 1px solid #dadbdd;
+}
+
+.CreateAnoffer-services div {
+    display: flex;
+    margin: 5px;
+}
+
+.CreateAnoffer-services div h5 {
+    display: flex;
+    align-items: center;
+}
+
+.packages-info {
+    margin: 5px;
+    border: 1px solid;
+    border-radius: 7px;
+    padding: 0px 11px;
+    border: 1px solid #c5c6c9;
+    margin: 5px;
+}
+
+.package-submit-button {
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    width: 55%;
+}

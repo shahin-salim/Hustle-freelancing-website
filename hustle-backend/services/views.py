@@ -19,11 +19,9 @@ class ServicesView(APIView):
 
     permission_classes = (AllowAny,)
 
-    def get_queryset_using_get(self):
-        pass
-
     def get(self, request):
         try:
+            print(request.user)
             instance = Services.objects.filter(
                 seller_id__user_id__username=request.user)
             serialzer = ServicesModelSerialzer(instance, many=True)

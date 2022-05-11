@@ -26,8 +26,6 @@ const ServiceDetailsBody = () => {
             const { data } = await axios.get(`${GET_SERVICE_URL + id}/`)
             setService(data)
             setUser(data.user)
-            console.log(data);
-            console.log(data.user);
             dispatch(servicesUser(data.user))
 
         } catch (err) {

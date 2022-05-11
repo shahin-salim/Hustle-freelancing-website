@@ -9,14 +9,18 @@ import { decodeJwtToken } from './Utils/decode.jwt';
 import { io } from 'socket.io-client';
 import { useWindowSize } from './Utils/FindScreenWidth'
 import Messeges from './Components/Messeges/Messeges';
+import { CHAT_SERVER_URL } from './Utils/Urls';
 
 const App = () => {
+
   const dispatch = useDispatch()
 
+  const screenSize = useWindowSize()
+
   const userStatus = useSelector(state => state.userStatus)
+
   const userListenTo = useSelector(state => state.userListenTo)
 
-  const screenSize = useWindowSize()
 
   useEffect(() => {
 
@@ -24,7 +28,7 @@ const App = () => {
     const user = decodeJwtToken()
     if (user) {
       try {
-        const Socket = io('http://localhost:4000/');
+        const Socket = io(CHAT_SERVER_URL);
         console.log(Socket);
 
         // set socket io instance in the redux state
@@ -34,8 +38,10 @@ const App = () => {
         Socket.emit('set_online', { username: user });
 
         Socket.on('messages', (data) => {
+          console.log(data);
           const message = JSON.parse(data.message)
-          if (message.sender == userListenTo) {
+          if (parseInt(message.sender) == parseInt(userListenTo)) {
+            console.log("before dispatch");
             dispatch(receivedMessage(message))
           }
         })

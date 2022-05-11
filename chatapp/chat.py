@@ -43,7 +43,6 @@ def connect(sid, environ):
         print("online users +++++++++++++++++++++++++++++++++++")
 
 
-
 async def _contacts(request):
     id = int(request.rel_url.query.get('id'))
     return web.json_response(
@@ -62,14 +61,28 @@ async def _messages(request):
 async def _send_messege(request):
     data = await request.json()
     print(online_users)
+    print(data)
 
-    chat = Chat(
-        sender=data['sender'],
-        receiver=data['receiver'],
-        message=data['message']
-    ).save()
+    try:
+        chat = Chat(
+            sender=data['sender'],
+            receiver=data['receiver'],
+            message=data['message']
+        ).save()
+        print("------------------------------------")
 
-    # await sio.emit("message", chat.to_json())
+    except:
+        chat = Chat(
+            sender=data['sender'],
+            receiver=data['receiver'],
+            delivery_time=data['delivery_time'],
+            desciption_about_offer=data['desciption_about_offer'],
+            package_id=data['id'],
+            price=data['price'],
+            type=data['type'],
+        ).save()
+        print("-------------================================================-----------------------")
+
     if data['receiver'] in online_users:
         await sio.emit('messages', {'message': chat.to_json()}, room=online_users[data['receiver']])
 

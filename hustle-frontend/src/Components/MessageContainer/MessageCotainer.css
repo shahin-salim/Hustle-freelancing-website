@@ -1,0 +1,46 @@
+.offer-header {
+    /* border: 1px solid #e4e5e7; */
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.offer-header h5 {
+    width: 88%;
+
+}
+
+.offer-styling {
+    border: 1px solid #e4e5e7;
+
+}
+
+.offer-content-part {
+    padding: 15px;
+
+}
+
+.border-bottum-color {
+    border-bottom: 1px solid #e4e5e7;
+}
+
+.offer-content-part span {
+    font-size: 18px;
+}
+
+.offer-buttons {
+    border-color: 1px solid #e4e5e7;
+    margin-top: 15px;
+    display: flex;
+    justify-content: end;
+    border-top: 1px solid #e4e5e7;
+    padding-top: 11px;
+}
+
+.offer-buttons div {
+    display: flex;
+    justify-content: space-between;
+    width: 207px;
+}

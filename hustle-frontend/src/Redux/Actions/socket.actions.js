@@ -152,8 +152,6 @@ export const sendMessages = (messege) =>
         } catch (error) {
             console.log(error);
         }
-
-
     }
 
 
@@ -165,6 +163,7 @@ export const receivedMessage = (message) =>
             type: RECEIVED_MESSAGES,
             payload: message
         })
+        console.log("dispatched");
     }
 
 

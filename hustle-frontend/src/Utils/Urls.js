@@ -27,7 +27,6 @@ export const GET_SERVICE_URL = "/services/service/"
 // Get the package deatils of the selected service
 export const GET_PACKAGES_OF_SERVICE_URL = "/services/scope_and_price/?service_id="
 
-
 // Get the all the  users have contact with the current user
 export const GET_USERS_IN_CONTACT_URL = "http://localhost:4000/contacts?id="
 
@@ -39,3 +38,9 @@ export const GET_MESSAGES_URL = "http://localhost:4000/messages"
 
 // Send messeges
 export const SEND_MESSAGES_URL = "http://localhost:4000/send_messages"
+
+// Chat server url
+export const CHAT_SERVER_URL = "http://localhost:4000/"
+
+// get servicess of the user
+export const SERVICES_OF_THE_USER_URL = "/services/"

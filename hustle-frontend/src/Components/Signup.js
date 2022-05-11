@@ -72,7 +72,6 @@ const Signup = ({ setOpen }) => {
         } catch (error) {
 
             // set the backend validation error to  hook form 
-
             const data = error.response.data;
             if (data.password) setError("username", { type: "server", message: error.response.data.username[0] });
             if (data.phone_number) setError("phone_number", { type: "server", message: error.response.data.phone_number[0] });

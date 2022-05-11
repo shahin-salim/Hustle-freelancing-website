@@ -21,22 +21,7 @@ const chatsStyle = {
 
 const Chat = () => {
 
-
 	const width = useWindowSize();
-
-	console.log(width);
-
-
-
-	useEffect(() => {
-
-
-	}, [])
-
-
-
-
-
 
 	return (
 		<div>

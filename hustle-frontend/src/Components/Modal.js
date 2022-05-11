@@ -15,6 +15,7 @@ import { Paper, Box, Grid, Typography } from "@mui/material";
 import axios from 'axios';
 import Signup from './Signup';
 import Login from './Login'
+import CreateAnOffer from './CreateAnOffer/CreateAnOffer';
 
 
 const Modal = ({ open, setOpen }) => {
@@ -33,8 +34,9 @@ const Modal = ({ open, setOpen }) => {
     return (
         <div>
             <Dialog open={open.bool} onClose={handleClose}>
-                {open.type == "signup" && <Signup open={open} setOpen={setOpen}  />}
-                {open.type == "login" && <Login   open={open} setOpen={setOpen}  />}
+                {open.type == "signup" && <Signup open={open} setOpen={setOpen} />}
+                {open.type == "login" && <Login open={open} setOpen={setOpen} />}
+                {open.type == "createAnOffer" && <CreateAnOffer open={open} setOpen={setOpen} />}
             </Dialog>
         </div>
     )
