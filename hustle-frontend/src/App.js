@@ -39,7 +39,9 @@ const App = () => {
 
         Socket.on('messages', (data) => {
           console.log(data);
+          console.log("=====================================================");
           const message = JSON.parse(data.message)
+          console.log(data);
           if (parseInt(message.sender) == parseInt(userListenTo)) {
             console.log("before dispatch");
             dispatch(receivedMessage(message))

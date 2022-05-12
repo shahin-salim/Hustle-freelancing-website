@@ -43,8 +43,8 @@ CORS_SETUP = {
     "ROUTE_AND_OPTIONS": {
         "http://localhost:3000": aiohttp_cors.ResourceOptions(
             allow_credentials=True,
-            expose_headers=("X-Custom-Server-Header",),
-            allow_headers=("X-Requested-With", "Content-Type"),
+            expose_headers="*",
+            allow_headers="*",
             max_age=3600,
         )
     }

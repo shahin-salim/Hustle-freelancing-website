@@ -1,11 +1,12 @@
-// import { ADD_NEW_USER_TO_CONTACT } from "../Constants/Chat.Constants"
+import { SEND_MESSAGE_AT_FIRST_TIME } from "../Constants/Chat.Constants"
 
 
-// export const addToContact = () =>
-//     async (dispatch, getState) => {
-//         console.log(getState().servicesUserDetails);
-//         dispatch({
-//             type: ADD_NEW_USER_TO_CONTACT,
-//             payload: getState().servicesUserDetails
-//         })
-//     }
+export const addToContact = (message) =>
+    async (dispatch, getState) => {
+        console.log(message);
+        console.log();
+        dispatch({
+            type: SEND_MESSAGE_AT_FIRST_TIME,
+            payload: getState().servicesUserDetails
+        })
+    }

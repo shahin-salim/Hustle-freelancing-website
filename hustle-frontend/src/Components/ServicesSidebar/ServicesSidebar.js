@@ -12,12 +12,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { GET_PACKAGES_OF_SERVICE_URL } from '../../Utils/Urls';
 import { useNavigate } from 'react-router-dom';
 import { addToContact } from '../../Redux/Actions/Chat.Actions';
+import Modal from '../Modal'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
-
-
 
     return (
         <div
@@ -51,12 +49,19 @@ function a11yProps(index) {
     };
 }
 
-export default function ServicesSidebar({ id }) {
+export default function ServicesSidebar({ id, service }) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const [value, setValue] = React.useState(0);
     const [packageInfo, setPackageInfo] = useState([])
+
+    const [open, setOpen] = useState({ bool: false })
+
+    const handleContactSeller = () => {
+        console.log(service);
+        setOpen({ bool: true, type: "contactSeller", otherUser: service.user.id })
+    }
 
     const handleNavigate = () => {
         // dispatch(addToContact())
@@ -84,6 +89,9 @@ export default function ServicesSidebar({ id }) {
 
     return (
         <Box sx={{ width: '100%' }}>
+
+            {open.bool && <Modal open={open} setOpen={setOpen} />}
+
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs className='modify-tabs' value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Basic" {...a11yProps(0)} />
@@ -113,7 +121,9 @@ export default function ServicesSidebar({ id }) {
 
 
             <div className='become-a-seller-button'>
-                <Button variant="dark" onClick={handleNavigate}>Contact seller</Button>
+                {/* <Button variant="dark" onClick={handleNavigate}>Contact seller</Button> */}
+                <Button variant="dark" onClick={handleContactSeller}>Contact seller</Button>
+
             </div>
         </Box>
     );

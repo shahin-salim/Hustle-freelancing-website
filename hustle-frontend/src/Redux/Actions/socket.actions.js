@@ -47,18 +47,17 @@ export const socketInstance = () =>
 
 
 // get the uer contact in the chat page
-export const contacts = (users) =>
+export const contacts = () =>
     async (dispatch, getState) => {
 
         const currState = getState()
 
+
+        console.log("//////////////////////////////////////////////////////////////////");
+
         try {
             // get the users who have contact with the current user
             const response = await axios.get(`${GET_USERS_IN_CONTACT_URL + currState.userStatus}`)
-            const users = response.data.contacts
-            if (currState.servicesUserDetails.id) {
-                users.push(currState.servicesUserDetails.id)
-            }
 
             // user get from the above url is just id 
             // to get the actual details give the user details to this url
@@ -66,7 +65,7 @@ export const contacts = (users) =>
                 GET_USER_DETAILS_URL,
                 {
                     params: {
-                        users: response.data.contacts
+                        users: response.data.contacts.users
                     },
                     paramsSerializer: function (params) {
                         return Qs.stringify(params, { arrayFormat: 'repeat' })
@@ -111,6 +110,7 @@ export const getMessage = () =>
                 {
                     params: { user1: state.userStatus, listenTo: state.userListenTo }
                 })
+            console.log(data);
 
             dispatch({
                 type: MESSAGES,
@@ -139,15 +139,14 @@ export const sendMessages = (messege) =>
     async (dispatch, getState) => {
 
         try {
-            const response = await axios.post(
-                SEND_MESSAGES_URL,
-                messege
-            )
+            const response = await axios.post(SEND_MESSAGES_URL, messege)
+            console.log(response);
 
             dispatch({
                 type: SEND_MESSAGES,
-                payload: messege
+                payload: response.data.messages
             })
+
 
         } catch (error) {
             console.log(error);
@@ -172,7 +171,7 @@ export const receivedMessage = (message) =>
 // button if seller not in the chat before.
 export const servicesUser = (userDetails) =>
     async (dispatch, getState) => {
-        
+
         dispatch({
             type: CURRENT_VIEWING_SERVICE,
             payload: userDetails

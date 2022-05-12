@@ -26,6 +26,7 @@ const useTheAxios = () => {
             console.log(!isExpired)
             if (!isExpired) return config
 
+
             try {
                 const response = await axios.post(REFRESH_TOKEN_URL, { refresh: refreshToken })
                 localStorage.setItem("accessToken", response.data.access)

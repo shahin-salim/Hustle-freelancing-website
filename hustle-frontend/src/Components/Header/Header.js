@@ -145,7 +145,7 @@ const Header = () => {
                         <input placeholder='Search' className='item-after-search' style={{ marginLeft: "50px" }} />
                     </div>
                     <div className='item-after-search'>
-                        <span className='navabr-font-color'>Messege</span>
+                        <span className='navabr-font-color' onClick={()=>navigate("/chat")}>Messages</span>
                         <span className='navabr-font-color'>Orders</span>
                         <span className='navabr-font-color'>Switch to selling</span>
                         {

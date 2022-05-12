@@ -64,7 +64,7 @@ const ServiceDetailsBody = () => {
 
                     <div className='package-sidebar-div'>
                         {/* display the package details in the side bar */}
-                        <ServicesSidebar id={id} />
+                        <ServicesSidebar id={id} service={service} />
                     </div>
 
                 </div>

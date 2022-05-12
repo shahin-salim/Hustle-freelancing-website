@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,15 +8,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { Paper, Box, Grid, Typography } from "@mui/material";
 import axios from 'axios';
 import Signup from './Signup';
 import Login from './Login'
 import CreateAnOffer from './CreateAnOffer/CreateAnOffer';
-
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import ContactSeller from './ContactSeller';
 
 const Modal = ({ open, setOpen }) => {
 
@@ -37,6 +36,8 @@ const Modal = ({ open, setOpen }) => {
                 {open.type == "signup" && <Signup open={open} setOpen={setOpen} />}
                 {open.type == "login" && <Login open={open} setOpen={setOpen} />}
                 {open.type == "createAnOffer" && <CreateAnOffer open={open} setOpen={setOpen} />}
+                {open.type == "contactSeller" && <ContactSeller open={open} setOpen={setOpen} />}
+
             </Dialog>
         </div>
     )

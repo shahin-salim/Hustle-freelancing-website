@@ -44,3 +44,6 @@ export const CHAT_SERVER_URL = "http://localhost:4000/"
 
 // get servicess of the user
 export const SERVICES_OF_THE_USER_URL = "/services/"
+
+// message at first time
+export const ESTABLISH_CONNECTION = "http://localhost:4000/establish_connection"
