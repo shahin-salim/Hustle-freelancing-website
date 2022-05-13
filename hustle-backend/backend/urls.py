@@ -52,6 +52,8 @@ urlpatterns = [
     path('category/', include(category_router.urls)),
     path('subcategory/', include(sub_category.urls)),
     path('services/', include('services.urls')),
+    path('chat/', include('chatapp.urls')),
+
 
     path('__debug__/', include('debug_toolbar.urls')),
 ]

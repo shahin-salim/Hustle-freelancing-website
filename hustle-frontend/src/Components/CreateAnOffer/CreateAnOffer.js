@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import './CreateAnOffer.css'
-import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import useTheAxios from '../../Axios/useAxios'
-import { GET_PACKAGES_OF_SERVICE_URL, SERVICES_OF_THE_USER_URL } from '../../Utils/Urls'
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
-
+import './CreateAnOffer.css'
 import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import useTheAxios from '../../Axios/useAxios'
+import TextField from '@mui/material/TextField';
+import React, { useEffect, useState } from 'react'
+import RadioGroup from '@mui/material/RadioGroup';
+import { useSelector, useDispatch } from 'react-redux'
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { sendMessages } from "../../Redux/Actions/socket.actions"
+import { GET_PACKAGES_OF_SERVICE_URL, SERVICES_OF_THE_USER_URL } from '../../Utils/Urls'
 
 
 const Sample = ({ info }) =>
@@ -30,113 +24,102 @@ const Sample = ({ info }) =>
 
 
 const CreateAnOffer = ({ open, setOpen }) => {
-    // const onSubmit = data => console.log(data);
 
-    const Socket = useSelector(state => state.Socket)
 
     const dispatch = useDispatch()
-    const user = useSelector(state => state.userStatus)
-    const listenTo = useSelector(state => state.userListenTo)
-
     const useAxios = useTheAxios()
-    const [services, setServices] = useState([])
-    const [packges, setPackages] = useState([])
-    const [selectedService, setSelectedService] = useState("")
-    const [currPlace, setCurrPlace] = useState("service")
 
-    const [selectedPackage, setSelectedPackage] = useState({})
+    const Socket = useSelector(state => state.Socket)
+    const user = useSelector(state => state.userStatus)
+    const userListenTo = useSelector(state => state.userListenTo)
 
     const [price, setPrice] = useState(0)
-
-
+    const [packges, setPackages] = useState([])
+    const [services, setServices] = useState([])
     const [value, setValue] = React.useState('basic');
+    const [currPlace, setCurrPlace] = useState("service")
+    const [selectedService, setSelectedService] = useState("")
+    const [selectedPackage, setSelectedPackage] = useState({})
+    const [offerDiscription, setOfferDiscription] = useState("")
+    const [validationErrors, setValidationErrors] = useState({})
 
+    console.log(selectedPackage);
+
+    // handle change in the input field for the negotiation price
     const handleChange = (event) => {
         setValue(event.target.value);
     };
 
+    // feach all services of the user
+    const fetchServices = async () => {
+        try {
+            const { data } = await useAxios.get(SERVICES_OF_THE_USER_URL)
+            setServices(data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
+    // get packages details of the selected service
     const handleServicePackages = async (id) => {
         try {
             const { data } = await useAxios.get(GET_PACKAGES_OF_SERVICE_URL + id)
             setPackages([...data])
             setSelectedPackage({ ...data[0] })
             setPrice(data[0].price)
-            // console.log(data, "*********************");
-
         } catch (error) {
             console.log(error);
         }
         setCurrPlace("packages")
     }
 
-    const fetchServices = async () => {
-        try {
-
-            const { data } = await useAxios.get(SERVICES_OF_THE_USER_URL)
-            console.log("service");
-            console.log(data);
-
-            setServices(data)
-
-        } catch (error) {
-            console.log(error);
+    // create offer will send an negotaited for the user in the other end
+    const handleCreateOffer = () => {
+        console.log(price, '   ', offerDiscription, price);
+        if (price && offerDiscription.trim()) {
+            dispatch(sendMessages({
+                ...selectedPackage,
+                price: parseInt(price),
+                sender: user,
+                conversation_id: userListenTo.conversation_id,
+                receiver: userListenTo.user.id,
+                discription: offerDiscription
+            }))
+            setOpen({ bool: false })
         }
     }
 
-    // console.log(services);
-    // console.log(packges);
-    // console.log(selectedPackage, '--------');
-
-
-
-    const handleCreateOffer = () => {
-
-        // if (selectedPackage.price != parseInt(price)) {
-        //     console.log("price changed", { ...selectedPackage, price: parseInt(price), sender: user, receiver: listenTo })
-        // }
-
-        dispatch(
-            sendMessages(
-                { ...selectedPackage, price: parseInt(price), sender: user, receiver: listenTo }
-            )
-        )
-
-
-    }
-
     useEffect(() => {
-        // console.log("use Effect changed");
         fetchServices()
-
     }, [])
 
 
-    // console.log(price, "this is price");
+
+
 
     return (
         <div className='create-an-offer-main-div'>
-            <div><h2 style={{ textAlign: "center", padding: "0px 190px 0px 190px" }}>Select Service</h2></div>
+            <div>
+                <h2 style={{ textAlign: "center", padding: "0px 190px 0px 190px" }}>Select Service</h2>
+            </div>
             {
                 currPlace == "service" && <div className='all-services'>
-                    {
-                        services.map((data) =>
-                            <div className='CreateAnoffer-services' key={data.id} onClick={() => handleServicePackages(data.id)}>
-                                <div>
-                                    <img style={{ width: "21%" }} src={data.image1} alt="image" />
-                                    <h5 style={{ marginLeft: "5px" }}>{data.title}</h5>
-                                </div>
+
+                    {/* list all the services */}
+                    {services.map((data) =>
+                        <div className='CreateAnoffer-services' key={data.id} onClick={() => handleServicePackages(data.id)}>
+                            <div>
+                                <img style={{ width: "21%" }} src={data.image1} alt="image" />
+                                <h5 style={{ marginLeft: "5px" }}>{data.title}</h5>
                             </div>
-                        )
-                    }
+                        </div>
+                    )}
 
                 </div>
             }
 
-            {
-                currPlace == "packages" &&
+            {currPlace == "packages" &&
                 <div className='all-services'>
-
                     <div>
                         <RadioGroup
                             aria-labelledby="demo-controlled-radio-buttons-group"
@@ -144,26 +127,55 @@ const CreateAnOffer = ({ open, setOpen }) => {
                             value={value}
                             onChange={handleChange}
                         >
-                            {
-                                packges.map((data) =>
-                                    <div key={data.id} className='packages-info' onChange={() => {
+
+                            {/* set packges information */}
+                            {packges.map((data) =>
+                                <div
+                                    key={data.id} className='packages-info'
+                                    onChange={() => {
                                         setSelectedPackage(data)
                                         setPrice(data.price)
-                                    }
-                                    } >
-                                        <FormControlLabel key={data.id} data={data} value={data.type} control={<Radio />} label={<Sample info={data} />} />
-                                    </div>
-                                )
-                            }
+                                    }} >
+                                    <FormControlLabel
+                                        key={data.id}
+                                        data={data}
+                                        value={data.type}
+                                        control={<Radio />}
+                                        label={<Sample info={data} />}
+                                    />
+                                </div>
+                            )}
+
                         </RadioGroup>
+
+
+                        <div style={{ padding: "0 5px 0 5px", marginTop: "6px" }}>
+
+                            <TextareaAutosize
+                                minRows={3}
+                                defaultValue={offerDiscription}
+                                style={{ width: "100%" }}
+                                aria-label="minimum height"
+                                placeholder="Discription about the offer"
+                                onChange={e => setOfferDiscription(e.target.value)}
+                            />
+
+                        </div>
+
+
                         <div style={{ display: "flex", alignItems: "center" }}>
-                            <div style={{ padding: "23px 7px 0px 6px" }}>
+                            <div className='negotiation-price-field'>
                                 <TextField
-                                    id="outlined-required"
                                     label='Price'
                                     value={price}
-                                    onChange={(e) => {
-                                        if (e.target.value.match(/^\d+$/) || e.target.value == "") setPrice(e.target.value)
+                                    id="outlined-required"
+                                    onChange={e => {
+                                        if (e.target.value.match(/^\d+$/) || e.target.value == "") {
+                                            setPrice(e.target.value)
+                                            setValidationErrors({ ...validationErrors, price: "" })
+                                        } else {
+                                            setValidationErrors({ ...validationErrors, price: "corrupt this field" })
+                                        }
                                     }}
                                 />
                             </div>

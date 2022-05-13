@@ -3,7 +3,6 @@ import { LISTENING_TO_REPLAY, MESSAGES, RECEIVED_MESSAGES, SEND_MESSAGES, SET_ME
 import { SET_SOCKET_IO, SET_CONTACTS } from "../Constants/Socket"
 import { io } from "socket.io-client"
 import axios from "axios"
-
 import * as Qs from 'qs'
 import { GET_MESSAGES_URL, GET_USERS_IN_CONTACT_URL, GET_USER_DETAILS_URL, SEND_MESSAGES_URL } from "../../Utils/Urls"
 import { CURRENT_VIEWING_SERVICE } from "../Constants/Services.Contact"
@@ -53,28 +52,59 @@ export const contacts = () =>
         const currState = getState()
 
 
-        console.log("//////////////////////////////////////////////////////////////////");
+        console.log("//////////////////////////////=================////////////////////////////////////");
 
         try {
             // get the users who have contact with the current user
-            const response = await axios.get(`${GET_USERS_IN_CONTACT_URL + currState.userStatus}`)
+            // const response = await axios.get(`${GET_USERS_IN_CONTACT_URL + currState.userStatus}`)
+
+            const response = await axios.get(`${"http://localhost:8000/chat/contacts"}`, {
+                params: {
+                    id: currState.userStatus
+                }
+            })
+            console.log("---------------------------------------------------------------------");
+
+            console.log(response);
+
 
             // user get from the above url is just id 
             // to get the actual details give the user details to this url
-            const { data } = await axios.get(
-                GET_USER_DETAILS_URL,
-                {
-                    params: {
-                        users: response.data.contacts.users
-                    },
-                    paramsSerializer: function (params) {
-                        return Qs.stringify(params, { arrayFormat: 'repeat' })
-                    }
-                })
+            // const { data } = await axios.get(
+            //     GET_USER_DETAILS_URL,
+            //     {
+            //         params: {
+            //             users: response.data.contacts.users
+            //         },
+            //         paramsSerializer: function (params) {
+            //             return Qs.stringify(params, { arrayFormat: 'repeat' })
+            //         }
+            //     })
+
+
+            const datas = response.data
+
+            let newDatas = []
+
+
+            datas.map((d) => {
+                if (d.user1.id == currState.userStatus) {
+                    delete d.user1
+                    newDatas = [...newDatas, { conversation_id: d.id, user: d.user2 }]
+                } else {
+                    delete d.user2
+                    newDatas = [...newDatas, { conversation_id: d.id, user: d.user1 }]
+                }
+
+            })
+
+            console.log(datas);
+            console.log("DATAS ====================");
+            console.log(newDatas);
 
             dispatch({
                 type: SET_CONTACTS,
-                payload: data
+                payload: newDatas
             })
 
         } catch (error) {
@@ -106,11 +136,12 @@ export const getMessage = () =>
         const state = getState()
         try {
 
-            const { data } = await axios.get(GET_MESSAGES_URL,
-                {
-                    params: { user1: state.userStatus, listenTo: state.userListenTo }
-                })
-            console.log(data);
+            const { data } = await axios.get(
+                GET_MESSAGES_URL, {
+                params: {
+                    conversation_id: state.userListenTo.conversation_id
+                }
+            })
 
             dispatch({
                 type: MESSAGES,
@@ -138,16 +169,18 @@ export const setSioInstance = (Socket) =>
 export const sendMessages = (messege) =>
     async (dispatch, getState) => {
 
+
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        console.log(messege);
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
         try {
             const response = await axios.post(SEND_MESSAGES_URL, messege)
-            console.log(response);
 
             dispatch({
                 type: SEND_MESSAGES,
-                payload: response.data.messages
+                payload: JSON.parse(response.data.messages)
             })
-
-
         } catch (error) {
             console.log(error);
         }
@@ -162,7 +195,7 @@ export const receivedMessage = (message) =>
             type: RECEIVED_MESSAGES,
             payload: message
         })
-        console.log("dispatched");
+
     }
 
 
@@ -176,4 +209,5 @@ export const servicesUser = (userDetails) =>
             type: CURRENT_VIEWING_SERVICE,
             payload: userDetails
         })
+
     }

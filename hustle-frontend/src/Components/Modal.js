@@ -35,8 +35,8 @@ const Modal = ({ open, setOpen }) => {
             <Dialog open={open.bool} onClose={handleClose}>
                 {open.type == "signup" && <Signup open={open} setOpen={setOpen} />}
                 {open.type == "login" && <Login open={open} setOpen={setOpen} />}
-                {open.type == "createAnOffer" && <CreateAnOffer open={open} setOpen={setOpen} />}
                 {open.type == "contactSeller" && <ContactSeller open={open} setOpen={setOpen} />}
+                {open.type == "createAnOffer" && <CreateAnOffer open={open} setOpen={setOpen} />}
 
             </Dialog>
         </div>

@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import Button from '@mui/material/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import useTheAxios from '../Axios/useAxios';
-import { ESTABLISH_CONNECTION } from '../Utils/Urls';
-import axios from 'axios';
 import * as Qs from 'qs'
+import axios from 'axios';
+import React, { useState } from 'react'
+import Button from '@mui/material/Button';
+import useTheAxios from '../Axios/useAxios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import { ESTABLISH_CONNECTION, GET_OR_CREATE_CONVERSATION_ID_URL, SEND_MESSAGES_URL } from '../Utils/Urls';
 
 const mainDivStyle = {
   display: "flex",
@@ -22,32 +22,31 @@ const ContactSeller = ({ open, setOpen }) => {
   const useAxios = useTheAxios()
   const navigate = useNavigate()
 
+
+  // send messages. here is the conversation collection is creating
   const handleSendMeassage = async () => {
     try {
 
-      const response = await useAxios.post(
-        "http://localhost:4000/establish_connection",
-        {
-          params: {
-            members: [user, open.otherUser]
-          },
-          message: message,
-          paramsSerializer: function (params) {
-            return Qs.stringify(params, { arrayFormat: 'repeat' })
-          }
-        })
+      // create connection between  peoples.
+      const { data } = await useAxios.post(GET_OR_CREATE_CONVERSATION_ID_URL, {
+        params: {
+          user1: user, user2: open.otherUser
+        }
+      })
 
-      console.log(response);
+      // id of that connected people is used to create messages
+      const response = await useAxios.post(SEND_MESSAGES_URL, {
+        sender: user,
+        conversation_id: data.id,
+        message: message,
+        receiver: open.otherUser
+      })
 
       navigate("/chat")
-
 
     } catch (error) {
       console.log(error);
     }
-
-
-
   }
 
 

@@ -31,23 +31,23 @@ const MessageCotainer = ({ styles, data }) => {
                         <div style={{ borderBottom: "1px solid #e4e5e7" }}>
                             <div className='offer-header'>
                                 <h5>I will web development using the most famous language python</h5>
-                                <h4>$5444</h4>
+                                <h4>${data.price}</h4>
                             </div>
                         </div>
                         <div className='offer-content-part'>
                             <div className='border-bottum-color'>
-                                <p>this is the final offer please accespt</p>
+                                <p>{data.message}</p>
                             </div>
                             <div style={{ marginTop: "15px" }}>
                                 <h6>you offer include</h6>
-                                <span>1 revisoin</span>
+                                <span>1 revisoin</span> 
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
                                 <span>1 deliery</span>
                             </div>
                             {
-                                data.receiver == user &&
+                                data.sender != user &&
                                 <div className='offer-buttons'>
                                     <div>
                                         <Button variant="outlined">Decline</Button>

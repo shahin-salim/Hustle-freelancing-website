@@ -15,8 +15,7 @@ class Members(Document):
 # Chat Document containes the information about the chat details
 class Chat(Document):
 
-    members_id = ReferenceField(Members)
-    _id = StringField(default=str(uuid4()),)
+    conversation_id = IntField(required=True)
     sender = IntField(required=True)
     message = StringField(required=False)
     created_at = DateTimeField(required=True, default=datetime.now())

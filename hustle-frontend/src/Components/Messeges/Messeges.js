@@ -1,108 +1,125 @@
 import './Messeges.css'
 import axios from 'axios'
+import Modal from '../Modal'
+import useTheAxios from '../../Axios/useAxios'
 import Button from 'react-bootstrap/esm/Button'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { GET_MESSAGES_URL, GET_SERVICE_URL, SEND_MESSAGES_URL } from '../../Utils/Urls'
-import { getMessage, sendMessages } from "../../Redux/Actions/socket.actions"
-import useTheAxios from '../../Axios/useAxios'
-import Modal from '../Modal'
 import MessageCotainer from '../MessageContainer/MessageCotainer'
+import { getMessage, sendMessages } from "../../Redux/Actions/socket.actions"
+import { GET_MESSAGES_URL, GET_SERVICE_URL, SEND_MESSAGES_URL, SERVICES_OF_THE_USER_URL } from '../../Utils/Urls'
+
+const MessagesInRightSide = {
+  marginTop: "30px",
+  display: "flex",
+  justifyContent: "end"
+}
+
 
 function Messeges() {
-  const useAxios = useTheAxios()
 
+  const useAxios = useTheAxios()
   const dispatch = useDispatch()
 
   const [openModal, setOpenModal] = useState({ bool: false })
   let [otherUser, setOtherUser] = useState(null)
-  const [userPackges, setUserPackges] = useState([])
+  const [userPackges, setUserPackages] = useState([])
   const [typedMessage, setTypedMessage] = useState("")
-
-
-  // console.log(useAxios);
 
   const userMessages = useSelector(state => state.userMessages)
   const user = useSelector(state => state.userStatus)
-  const listenTo = useSelector(state => state.userListenTo)
+  const userListenTo = useSelector(state => state.userListenTo)
   const userContacts = useSelector(state => state.userContacts)
 
-  const MessagesInRightSide = {
-    marginTop: "30px",
-    display: "flex",
-    justifyContent: "end"
-  }
 
-
+  // fetch packages of the user
   const fetchPackgesInfo = async () => {
+
     try {
-      const { data } = await useAxios.get("/services/")
-      setUserPackges([...data])
+
+      const { data } = await useAxios.get(SERVICES_OF_THE_USER_URL)
+      console.log(data);
+      setUserPackages([...data])
 
     } catch (error) {
       console.log(error);
     }
+
   }
 
 
-  useEffect(() => {
-
-    if (listenTo) {
-
-      dispatch(getMessage())
-
-      setOtherUser(
-        userContacts.filter((user) => user.id == listenTo)[0]
-      )
-
-    }
-
-    fetchPackgesInfo()
-
-  }, [listenTo])
-
+  // send message
   const handleSendMessage = () => {
+
     if (typedMessage) {
 
-      dispatch(sendMessages(
-        { sender: user, receiver: listenTo, message: typedMessage }
-      ))
+      // const receiver_id = userContacts.filter(data => data.conversation_id == userListenTo)
+      dispatch(sendMessages({
+        sender: user,
+        conversation_id: userListenTo.conversation_id,
+        message: typedMessage,
+        receiver: userListenTo.user.id
+      }))
 
       setTypedMessage("")
     }
   }
 
+  useEffect(() => {
 
+    if (userListenTo) {             // get messages if user is watching someones chat
+      dispatch(getMessage())
+      setOtherUser(userListenTo)
+    }
+
+    fetchPackgesInfo()
+
+  }, [userListenTo])
+
+
+  // open modal for create offer
   const handleCreateAnOffer = () => {
-
-    setOpenModal({ bool: true, type: "createAnOffer" })
-
+    setOpenModal({
+      bool: true,
+      type: "createAnOffer"
+    })
   }
 
 
   return (
     <>
+      {/* create an offer modal */}
+      {openModal.bool && <Modal open={openModal} setOpen={setOpenModal} />}
 
       <div className='messeges-style'>
         <div className='messeges-header'>
-          <h3>{otherUser && otherUser.username}</h3>
+          <h3>
+            {otherUser && otherUser.user.username}
+          </h3>
         </div>
 
         <div className='show-messeges'>
           {
             userMessages.map((data, index) =>
-
               data.sender === user ?
 
-               <MessageCotainer styles={MessagesInRightSide} data={data} />
+                <MessageCotainer
+                  key={index}
+                  styles={MessagesInRightSide}
+                  data={data}
+                />   // show messages in right side
                 :
-                <MessageCotainer styles={{ marginTop: "30px" }} data={data} />
+                <MessageCotainer
+                  key={index}
+                  styles={{ marginTop: "30px" }}
+                  data={data}
+                />   // show messages in left side
             )
           }
         </div>
 
         {
-          listenTo &&
+          userListenTo &&
           <>
             <div style={{ padding: "7px" }}>
               <input
@@ -114,9 +131,6 @@ function Messeges() {
 
             {/* create offer */}
             <div style={{ padding: "7px", display: "flex", justifyContent: "space-between" }}>
-
-              {openModal.bool && <Modal open={openModal} setOpen={setOpenModal} />}
-
               <Button variant="outline-success" onClick={handleCreateAnOffer}>Create an offer</Button>{' '}
 
               {/* send message */}

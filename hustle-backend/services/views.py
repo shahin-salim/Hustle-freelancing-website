@@ -17,7 +17,7 @@ class ServicesView(APIView):
     All the methods only accessed by the seller
     """
 
-    permission_classes = (AllowAny,)
+    permission_classes = (IsSellerIsAuthorized,)
 
     def get(self, request):
         try:

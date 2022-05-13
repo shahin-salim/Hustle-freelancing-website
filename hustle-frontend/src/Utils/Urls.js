@@ -47,3 +47,6 @@ export const SERVICES_OF_THE_USER_URL = "/services/"
 
 // message at first time
 export const ESTABLISH_CONNECTION = "http://localhost:4000/establish_connection"
+
+// get conversation id of the chat
+export const GET_OR_CREATE_CONVERSATION_ID_URL = "/chat/"
