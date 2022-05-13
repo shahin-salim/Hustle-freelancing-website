@@ -4,6 +4,9 @@
 // // Service image starts with url
 // export const PROFILE_IMAGE_URL = "https://res.cloudinary.com/dkezigu54/image/upload/v1651119421/"
 
+// SERVER 2 URL
+// Chat server url
+export const CHAT_SERVER_URL = "http://localhost:4000/"
 
 
 // Refresh token url if token is expired
@@ -28,25 +31,23 @@ export const GET_SERVICE_URL = "/services/service/"
 export const GET_PACKAGES_OF_SERVICE_URL = "/services/scope_and_price/?service_id="
 
 // Get the all the  users have contact with the current user
-export const GET_USERS_IN_CONTACT_URL = "http://localhost:4000/contacts?id="
+// export const GET_USERS_IN_CONTACT_URL = CHAT_SERVER_URL + "contacts?id="
+export const GET_USERS_IN_CONTACT_URL = "/chat/contacts"
 
 // Get all the users details
-export const GET_USER_DETAILS_URL = "http://localhost:8000/accounts/users/"
+export const GET_USER_DETAILS_URL = "/accounts/users/"
 
 // Get chats using the sender and reciever id
-export const GET_MESSAGES_URL = "http://localhost:4000/messages"
+export const GET_MESSAGES_URL = CHAT_SERVER_URL + "messages"
 
 // Send messeges
-export const SEND_MESSAGES_URL = "http://localhost:4000/send_messages"
-
-// Chat server url
-export const CHAT_SERVER_URL = "http://localhost:4000/"
+export const SEND_MESSAGES_URL = CHAT_SERVER_URL + "send_messages"
 
 // get servicess of the user
 export const SERVICES_OF_THE_USER_URL = "/services/"
 
 // message at first time
-export const ESTABLISH_CONNECTION = "http://localhost:4000/establish_connection"
+export const ESTABLISH_CONNECTION = CHAT_SERVER_URL + "establish_connection"
 
 // get conversation id of the chat
 export const GET_OR_CREATE_CONVERSATION_ID_URL = "/chat/"

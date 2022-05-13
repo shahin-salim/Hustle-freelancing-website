@@ -53,7 +53,6 @@ function Messeges() {
 
     if (typedMessage) {
 
-      // const receiver_id = userContacts.filter(data => data.conversation_id == userListenTo)
       dispatch(sendMessages({
         sender: user,
         conversation_id: userListenTo.conversation_id,

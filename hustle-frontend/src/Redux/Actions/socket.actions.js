@@ -51,42 +51,20 @@ export const contacts = () =>
 
         const currState = getState()
 
-
-        console.log("//////////////////////////////=================////////////////////////////////////");
-
         try {
             // get the users who have contact with the current user
-            // const response = await axios.get(`${GET_USERS_IN_CONTACT_URL + currState.userStatus}`)
 
-            const response = await axios.get(`${"http://localhost:8000/chat/contacts"}`, {
+            const response = await axios.get(GET_USERS_IN_CONTACT_URL, {
                 params: {
                     id: currState.userStatus
                 }
             })
-            console.log("---------------------------------------------------------------------");
-
-            console.log(response);
-
-
-            // user get from the above url is just id 
-            // to get the actual details give the user details to this url
-            // const { data } = await axios.get(
-            //     GET_USER_DETAILS_URL,
-            //     {
-            //         params: {
-            //             users: response.data.contacts.users
-            //         },
-            //         paramsSerializer: function (params) {
-            //             return Qs.stringify(params, { arrayFormat: 'repeat' })
-            //         }
-            //     })
-
 
             const datas = response.data
 
             let newDatas = []
 
-
+            // remove current user from the array of object
             datas.map((d) => {
                 if (d.user1.id == currState.userStatus) {
                     delete d.user1
@@ -97,11 +75,7 @@ export const contacts = () =>
                 }
 
             })
-
-            console.log(datas);
-            console.log("DATAS ====================");
-            console.log(newDatas);
-
+            
             dispatch({
                 type: SET_CONTACTS,
                 payload: newDatas
@@ -168,11 +142,6 @@ export const setSioInstance = (Socket) =>
 // send message to another user and set the messsage in the state
 export const sendMessages = (messege) =>
     async (dispatch, getState) => {
-
-
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-        console.log(messege);
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
         try {
             const response = await axios.post(SEND_MESSAGES_URL, messege)

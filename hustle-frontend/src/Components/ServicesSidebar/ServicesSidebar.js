@@ -11,7 +11,6 @@ import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { GET_PACKAGES_OF_SERVICE_URL } from '../../Utils/Urls';
 import { useNavigate } from 'react-router-dom';
-import { addToContact } from '../../Redux/Actions/Chat.Actions';
 import Modal from '../Modal'
 
 function TabPanel(props) {
