@@ -3,7 +3,7 @@ import axios from 'axios'
 import Modal from '../Modal'
 import useTheAxios from '../../Axios/useAxios'
 import Button from 'react-bootstrap/esm/Button'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import MessageCotainer from '../MessageContainer/MessageCotainer'
 import { getMessage, sendMessages } from "../../Redux/Actions/socket.actions"
@@ -20,23 +20,37 @@ function Messeges() {
 
   const useAxios = useTheAxios()
   const dispatch = useDispatch()
-
-  const [openModal, setOpenModal] = useState({ bool: false })
+  const chatScollToBottum = useRef(null);
   let [otherUser, setOtherUser] = useState(null)
   const [userPackges, setUserPackages] = useState([])
   const [typedMessage, setTypedMessage] = useState("")
+  const [openModal, setOpenModal] = useState({ bool: false })
 
-  const userMessages = useSelector(state => state.userMessages)
   const user = useSelector(state => state.userStatus)
+  const userMessages = useSelector(state => state.userMessages)
   const userListenTo = useSelector(state => state.userListenTo)
   const userContacts = useSelector(state => state.userContacts)
 
+  // when new messages arrived scroll to bottum
+  useEffect(() => {
+    chatScollToBottum.current.scrollIntoView({ behavior: 'smooth' });
+  }, [userMessages]);
+
+  useEffect(() => {
+
+    // get messages if user is watching someones chat
+    if (userListenTo) {
+      dispatch(getMessage())
+      setOtherUser(userListenTo)
+    }
+    fetchPackgesInfo()
+
+  }, [userListenTo])
 
   // fetch packages of the user
   const fetchPackgesInfo = async () => {
 
     try {
-
       const { data } = await useAxios.get(SERVICES_OF_THE_USER_URL)
       console.log(data);
       setUserPackages([...data])
@@ -47,12 +61,10 @@ function Messeges() {
 
   }
 
-
   // send message
   const handleSendMessage = () => {
 
     if (typedMessage) {
-
       dispatch(sendMessages({
         sender: user,
         conversation_id: userListenTo.conversation_id,
@@ -62,27 +74,19 @@ function Messeges() {
 
       setTypedMessage("")
     }
+
   }
-
-  useEffect(() => {
-
-    if (userListenTo) {             // get messages if user is watching someones chat
-      dispatch(getMessage())
-      setOtherUser(userListenTo)
-    }
-
-    fetchPackgesInfo()
-
-  }, [userListenTo])
-
 
   // open modal for create offer
   const handleCreateAnOffer = () => {
+
     setOpenModal({
       bool: true,
       type: "createAnOffer"
     })
+    
   }
+
 
 
   return (
@@ -115,7 +119,9 @@ function Messeges() {
                 />   // show messages in left side
             )
           }
+          <div ref={chatScollToBottum} />
         </div>
+
 
         {
           userListenTo &&

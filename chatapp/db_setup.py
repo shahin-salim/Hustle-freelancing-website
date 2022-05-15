@@ -5,11 +5,7 @@ from mongoengine.fields import ListField, ReferenceField
 from mongoengine import Document, StringField, IntField, DateTimeField
 
 
-# 2 members in each chat. the 2 id's are saved in this document
-class Members(Document):
 
-    _id = StringField(default=str(uuid4()),)
-    members = ListField(IntField(required=True))
 
 
 # Chat Document containes the information about the chat details

@@ -36,15 +36,25 @@ const MessageCotainer = ({ styles, data }) => {
             currUser: user
         });
 
-
-
-
     }
 
     const handlePayment = async (packageData) => {
         try {
-            const { data } = await useAxios.post("/order/razorpay", packageData, user)
-            makePayment(data, packageData, user)
+            const { data } = await useAxios.post("/order/razorpay", packageData, user,)
+            makePayment(
+                data,
+                packageData,
+                user,
+                () => {
+                    Socket.emit('offer_status', {
+                        conversation_id: packageData.conversation_id,
+                        status: "accepted",
+                        id: packageData._id,
+                        sender: packageData.sender,
+                        currUser: user
+                    });
+                }
+            )
         } catch (error) {
 
         }
@@ -90,14 +100,28 @@ const MessageCotainer = ({ styles, data }) => {
                                         <Button variant="contained" onClick={_ => handlePayment(data)}>Accept</Button>
                                     </div>
                                 </div>
+ 
+ 
+
+
+                            }
+
+
+                            {
+                                (data.status == "pending" && data.sender == user) &&
+                                <div className='offer-buttons'>
+                                    <h4 style={{ color: "#4a148c" }}>Offer {data.status}</h4>
+                                </div>
                             }
 
                             {
-                                (data.status === "declined" || data.status === "accepted" || data.sender === user) &&
-                                <div className='offer-buttons'>
-                                    <h4>Offer {data.status}</h4>
-                                </div>
+                                (data.status == "declined") && <h4 className='offer-buttons' style={{ color: "#b71c1c" }}>Offer {data.status}</h4>
                             }
+
+                            {
+                                (data.status == "accepted") && <h4 className='offer-buttons' style={{ color: "#4caf50" }}>Offer {data.status}</h4>
+                            }
+
 
 
 

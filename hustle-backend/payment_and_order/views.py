@@ -9,9 +9,8 @@ from response import HTTP_400, HTTP_201
 from accounts.models import CustomUser
 from services.models import ScopeAndPrice
 from .models import Order, Payment
-# Create your views here.
 
-# authorize razorpay client with API Keys.
+
 razorpay_client = razorpay.Client(
     auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET))
 
@@ -30,9 +29,15 @@ class Razorpay_Order(APIView):
 
 
 class PayAndOrder(APIView):
+    """
+    save payment details and place the order
+    """
+
     permission_classes = (AllowAny, )
 
     def post(self, request):
+
+        print(request.data)
 
         serialzer = PaymentSerializer(data=request.data)
         if serialzer.is_valid():
@@ -49,4 +54,3 @@ class PayAndOrder(APIView):
 
             return HTTP_201({"success": True})
         return HTTP_400(serialzer.errors)
-    

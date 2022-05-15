@@ -1,11 +1,10 @@
 import json
 from settings import *
 from aiohttp import web
-from db_setup import Chat, Members
+from db_setup import Chat
 from bson import json_util, ObjectId
 from django.dispatch import receiver
 from mongoengine.queryset.visitor import Q
-import json
 
 
 from mongo_pipeline import get_messeges
@@ -62,17 +61,20 @@ async def _messages(request):
     )
 
 
+# send message to users
 async def _send_messege(request):
     data = await request.json()
     params = dict(data)
 
     try:
+        # common chat
         chat = Chat(
             conversation_id=params["conversation_id"],
             sender=params["sender"],
             message=params['message']
         ).save()
     except:
+        # seller make negotiation 
         chat = Chat(
             conversation_id=params["conversation_id"],
             sender=params['sender'],
@@ -83,6 +85,7 @@ async def _send_messege(request):
             type=params['type'],
         ).save()
 
+    # if receive is online send message to socket id
     if params['receiver'] in online_users:
         await sio.emit('messages', {'message': chat.to_json()}, room=online_users[params['receiver']])
 
