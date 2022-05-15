@@ -42,6 +42,7 @@ const CreateAnOffer = ({ open, setOpen }) => {
     const [selectedPackage, setSelectedPackage] = useState({})
     const [offerDiscription, setOfferDiscription] = useState("")
     const [validationErrors, setValidationErrors] = useState({})
+    const [serviceModalTitle, setServiceModalTitle] = useState("Select Service")
 
     console.log(selectedPackage);
 
@@ -53,10 +54,13 @@ const CreateAnOffer = ({ open, setOpen }) => {
     // feach all services of the user
     const fetchServices = async () => {
         try {
+            setServiceModalTitle("Select Service")
             const { data } = await useAxios.get(SERVICES_OF_THE_USER_URL)
+            console.log("-----------------------------------------------");
             setServices(data)
         } catch (error) {
-            console.log(error);
+            // console.log(error);
+            setServiceModalTitle("you are not a seller")
         }
     }
 
@@ -100,7 +104,7 @@ const CreateAnOffer = ({ open, setOpen }) => {
     return (
         <div className='create-an-offer-main-div'>
             <div>
-                <h2 style={{ textAlign: "center", padding: "0px 190px 0px 190px" }}>Select Service</h2>
+                <h2 style={{ textAlign: "center", padding: "0px 190px 0px 190px" }}>{serviceModalTitle}</h2>
             </div>
             {
                 currPlace == "service" && <div className='all-services'>

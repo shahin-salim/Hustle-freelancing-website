@@ -1,3 +1,5 @@
+import { logoutTheUser } from "../Actions/token.action";
+import { NEGOTIATION_STATUS_CHANGED } from "../Constants/Chat.Constants"
 // import { ADD_NEW_USER_TO_CONTACT } from "../Constants/Chat.Constants";
 import { LISTENING_TO_REPLAY, MESSAGES, RECEIVED_MESSAGES, SEND_MESSAGES, SET_CONTACTS, SET_MESSEGES } from "../Constants/Socket";
 import { SET_SOCKET_IO } from "../Constants/Socket";
@@ -55,6 +57,11 @@ export const setMessages = (state = [], { type, payload }) => {
             return [...state, payload]
         case RECEIVED_MESSAGES:
             return [...state, payload]
+        case NEGOTIATION_STATUS_CHANGED:
+            console.log("****^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            
+            console.log(payload);
+            return [...payload]
         default:
             return state
     }

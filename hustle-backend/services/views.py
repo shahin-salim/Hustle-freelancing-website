@@ -20,6 +20,7 @@ class ServicesView(APIView):
     permission_classes = (IsSellerIsAuthorized,)
 
     def get(self, request):
+        print("==================================================")
         try:
             print(request.user)
             instance = Services.objects.filter(
@@ -122,5 +123,6 @@ class GetService(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, pk=None):
+        print("-------------------------------------------------")
         queryset = ServicesModelSerialzer(Services.objects.get(pk=pk))
         return HTTP_200(queryset.data)

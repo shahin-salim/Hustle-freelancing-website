@@ -54,6 +54,7 @@ urlpatterns = [
     path('services/', include('services.urls')),
     path('chat/', include('chatapp.urls')),
 
+    path('order/', include('payment_and_order.urls')),
 
     path('__debug__/', include('debug_toolbar.urls')),
 ]

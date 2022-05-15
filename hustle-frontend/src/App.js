@@ -1,6 +1,6 @@
 import Chat from './Pages/Chat'
 import Home from './Pages/Home';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { CHAT_SERVER_URL } from './Utils/Urls';
 import ProductDetail from './Pages/ProductDetail'
 import React, { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { useWindowSize } from './Utils/FindScreenWidth'
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { contacts, receivedMessage, setSioInstance } from './Redux/Actions/socket.actions';
+import { chatsNegotiationStatus } from './Redux/Actions/Chat.Actions';
 
 const App = () => {
   const dispatch = useDispatch()
@@ -18,27 +19,45 @@ const App = () => {
   const userStatus = useSelector(state => state.userStatus)
   const userListenTo = useSelector(state => state.userListenTo)
   const state = useSelector(state => state)
+  const Socket = useSelector(state => state.Socket)
+
 
   useEffect(() => {
 
-    const user = decodeJwtToken() // get user from jwt token
-    if (user) {
+    // const user = decodeJwtToken() // get user from jwt token
+    if (userStatus) {
+
+
 
       try {
 
-        const Socket = io(CHAT_SERVER_URL); // connect to socket io
+        if (!Socket) {
+          
+          const Socket = io(CHAT_SERVER_URL);    // connect to socket io
 
-        dispatch(setSioInstance(Socket)); // set socket io instance in the redux state
+          // set socket io instance in the redux state
+          dispatch(setSioInstance(Socket));
+        }
 
-        Socket.emit('set_online', { username: user }); // set username with socket io for set user to be online
+        // set username with socket io for set user to be online
+        Socket && Socket.emit('set_online', { username: userStatus }); 
 
-        Socket.on('messages', (data) => {
 
+        // listen message event . this message gives the messages emitted using this user if
+        Socket && Socket.on('messages', (data) => {
+
+          // if the curr user listenign user id and the user sended this message 
+          // this both ids are same the messsage will update in the redux state
           const message = JSON.parse(data.message)
-
           if (parseInt(message.conversation_id) == parseInt(userListenTo.conversation_id)) {
             dispatch(receivedMessage(message))
           }
+        })
+
+
+        //  listen any changes happen to offer status event
+        Socket && Socket.on('offer_status', (data) => {
+          dispatch(chatsNegotiationStatus(JSON.parse(data.message)))
         })
 
       } catch (err) {

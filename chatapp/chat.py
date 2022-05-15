@@ -5,6 +5,7 @@ from db_setup import Chat, Members
 from bson import json_util, ObjectId
 from django.dispatch import receiver
 from mongoengine.queryset.visitor import Q
+import json
 
 
 from mongo_pipeline import get_messeges
@@ -35,8 +36,23 @@ def connect(sid, environ):
         """
 
         online_users[data["username"]] = sid
+        print(online_users)
 
+    @sio.event
+    async def offer_status(sid, data):
+        """
+        set user sid in the dictnory
+        """
 
+        Chat.objects(id=data["id"]["$oid"]).update_one(
+            status=data["status"])
+
+        chat_as_Json = Chat.objects(id=data["id"]["$oid"])[0].to_json()
+
+        if data["sender"] in online_users:
+            await sio.emit('offer_status', {'message': chat_as_Json}, room=online_users[data["sender"]])
+        if data["currUser"] in online_users:
+            await sio.emit('offer_status', {'message': chat_as_Json}, room=online_users[data["currUser"]])
 
 
 async def _messages(request):
@@ -48,10 +64,7 @@ async def _messages(request):
 
 async def _send_messege(request):
     data = await request.json()
-    print(online_users)
-
     params = dict(data)
-    print(params, "\n ++++++++++++++++++++++==")
 
     try:
         chat = Chat(
@@ -72,8 +85,6 @@ async def _send_messege(request):
 
     if params['receiver'] in online_users:
         await sio.emit('messages', {'message': chat.to_json()}, room=online_users[params['receiver']])
-        print("=========== EMITTED ============")
-
 
     return web.json_response(
         {"messages": chat.to_json()}

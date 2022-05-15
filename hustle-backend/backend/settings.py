@@ -42,16 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    "corsheaders",
     'rest_framework',
-    'accounts',
-    'seller',
-    'category',
-    'services',
-    'subcategory',
-    'cloudinary',
+    'corsheaders',
     'debug_toolbar',
-    'chatapp'
+
+    'seller',
+    'chatapp',
+    'services',
+    'accounts',
+    'category',
+    'cloudinary',
+    'subcategory',
+    'payment_and_order',
 ]
 
 MIDDLEWARE = [
@@ -82,9 +84,6 @@ if DEBUG:
 
 # .......................................................................................
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -166,6 +165,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'utils.custom_exception_handler.handle',
@@ -230,3 +232,6 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
+# RAZORPAY SETUP
+RAZORPAY_API_KEY = config('RAZORPAY_API_KEY')
+RAZORPAY_API_SECRET = config('RAZORPAY_API_SECRET')

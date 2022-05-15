@@ -1,13 +1,12 @@
-from lib2to3.pytree import type_repr
+from response import HTTP_200
+from .models import SellerProfile
+from rest_framework import status
 from rest_framework import viewsets
 from accounts.models import CustomUser
-from response import HTTP_200
-from seller.serializer import SellerProfileSerialzer
-from .models import SellerProfile
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from seller.serializer import SellerProfileSerialzer
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from utils.permission_class import IsUserIsAuthorized
 from .signals import update_user
 from utils.seller_verify import IsSellerIsAuthorized

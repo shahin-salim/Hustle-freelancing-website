@@ -2,6 +2,8 @@ import React from 'react'
 import "./MessageCotainer.css"
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux'
+import { makePayment } from '../../Utils/Payment';
+import useTheAxios from '../../Axios/useAxios';
 
 const chatSpanStyle = {
     background: "blue",
@@ -11,8 +13,42 @@ const chatSpanStyle = {
 }
 
 
+
+
 const MessageCotainer = ({ styles, data }) => {
+
+
     const user = useSelector(state => state.userStatus)
+    const Socket = useSelector(state => state.Socket)
+
+
+    const useAxios = useTheAxios()
+
+
+    // decline the offer seller made
+    const handleDeclineOffer = async (data) => {
+        // decline offer
+        Socket.emit('offer_status', {
+            conversation_id: data.conversation_id,
+            status: "declined",
+            id: data._id,
+            sender: data.sender,
+            currUser: user
+        });
+
+
+
+
+    }
+
+    const handlePayment = async (packageData) => {
+        try {
+            const { data } = await useAxios.post("/order/razorpay", packageData, user)
+            makePayment(data, packageData, user)
+        } catch (error) {
+
+        }
+    }
 
     return (
         <div style={styles} key={data.id}   >
@@ -40,21 +76,31 @@ const MessageCotainer = ({ styles, data }) => {
                             </div>
                             <div style={{ marginTop: "15px" }}>
                                 <h6>you offer include</h6>
-                                <span>1 revisoin</span> 
+                                <span>1 revisoin</span>
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
                                 <span>1 deliery</span>
                             </div>
                             {
-                                data.sender != user &&
+                                data.status == "pending" && data.sender != user &&
                                 <div className='offer-buttons'>
                                     <div>
-                                        <Button variant="outlined">Decline</Button>
-                                        <Button variant="contained">Accept</Button>
+                                        <Button variant="outlined" onClick={_ => handleDeclineOffer(data)}>Decline</Button>
+                                        <Button variant="contained" onClick={_ => handlePayment(data)}>Accept</Button>
                                     </div>
                                 </div>
                             }
+
+                            {
+                                (data.status === "declined" || data.status === "accepted" || data.sender === user) &&
+                                <div className='offer-buttons'>
+                                    <h4>Offer {data.status}</h4>
+                                </div>
+                            }
+
+
+
                         </div>
                     </div>
                 </div>

@@ -24,3 +24,4 @@ class Chat(Document):
     package_id = IntField(required=False)
     price = IntField(required=False)
     type = StringField(required=False)
+    status = StringField(required=True, default="pending")

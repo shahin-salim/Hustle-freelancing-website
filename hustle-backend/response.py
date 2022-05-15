@@ -7,7 +7,6 @@ def HTTP_200(data):
 
 
 def HTTP_201(data):
-    print("---------------------------------------------------------", data)
     return Response(data, status=status.HTTP_201_CREATED)
 
 
