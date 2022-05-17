@@ -37,6 +37,10 @@ class ServicesModelSerialzer(serializers.ModelSerializer):
 
 
 class ScopeAndPriceModelSerialzer(serializers.ModelSerializer):
+    """
+    packages
+    """
+    service_id = ServicesModelSerialzer()
 
     class Meta:
         model = ScopeAndPrice

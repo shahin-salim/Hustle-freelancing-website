@@ -146,7 +146,7 @@ const Header = () => {
                     </div>
                     <div className='item-after-search'>
                         <span className='navabr-font-color' onClick={()=>navigate("/chat")}>Messages</span>
-                        <span className='navabr-font-color'>Orders</span>
+                        <span className='navabr-font-color' onClick={()=>navigate("/orders")}>Orders</span>
                         <span className='navabr-font-color'>Switch to selling</span>
                         {
                             userStatus ? <Avathar /> : !userStatus && <> <span className='navabr-font-color' onClick={() => setOpenForm({ bool: true, type: "signup" })}>Signup</span>

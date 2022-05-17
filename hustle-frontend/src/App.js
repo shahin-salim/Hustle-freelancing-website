@@ -9,8 +9,9 @@ import Messeges from './Components/Messeges/Messeges';
 import { useWindowSize } from './Utils/FindScreenWidth'
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { contacts, receivedMessage, setSioInstance } from './Redux/Actions/socket.actions';
 import { chatsNegotiationStatus } from './Redux/Actions/Chat.Actions';
+import { contacts, receivedMessage, setSioInstance } from './Redux/Actions/socket.actions';
+import Orders from './Pages/Orders';
 
 const App = () => {
   const dispatch = useDispatch()
@@ -75,6 +76,7 @@ const App = () => {
           <Route exact path="/" element={<Home />} />
           <Route path="/service/:id" element={<ProductDetail />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/orders" element={<Orders />} />
 
           {/* show messages in smalll screen devices only if the size of window is less tha 700 this route will work */}
           {screenSize < 700 && <Route path="/messages" element={<Messeges />} />}

@@ -41,10 +41,10 @@ const MessageCotainer = ({ styles, data }) => {
     const handlePayment = async (packageData) => {
         try {
             const { data } = await useAxios.post("/order/razorpay", packageData, user,)
+
+            // razorpay setup
             makePayment(
-                data,
-                packageData,
-                user,
+                data, packageData, user,
                 () => {
                     Socket.emit('offer_status', {
                         conversation_id: packageData.conversation_id,
@@ -56,7 +56,7 @@ const MessageCotainer = ({ styles, data }) => {
                 }
             )
         } catch (error) {
-
+            console.log(error);
         }
     }
 
@@ -100,8 +100,8 @@ const MessageCotainer = ({ styles, data }) => {
                                         <Button variant="contained" onClick={_ => handlePayment(data)}>Accept</Button>
                                     </div>
                                 </div>
- 
- 
+
+
 
 
                             }
