@@ -15,6 +15,7 @@ const Orders = () => {
 
     const [orders, setOrders] = useState([])
     const [backupOrders, setBackupOrders] = useState([])
+    const [page, setPage] = React.useState(1);
 
 
     const fetchOrderDetials = async () => {
@@ -33,21 +34,22 @@ const Orders = () => {
 
     }
 
-    const ShowOrderDetails = (data) => {
+    const ShowOrderDetails = ({ data, index }) => {
         const handleFilter = () => {
             console.log("============= filtering ============");
         }
         return (
             <>
+                {/* <TableCell align="center">{7 * page - 7 + index + 1}</TableCell> */}
                 <TableCell align="center" component="th" scope="data">
-                    {data.data.package_id.service_id.user.username}
+                    {data.package_id.service_id.user.username}
                 </TableCell>
-                <TableCell align="center">{data.data.payment_id.amount}</TableCell>
-                <TableCell align="center">{data.data.package_id.delivery_time}</TableCell>
-                <TableCell align="center">{data.data.date}</TableCell>
+                <TableCell align="center">{data.payment_id.amount}</TableCell>
+                <TableCell align="center">{data.package_id.delivery_time}</TableCell>
+                <TableCell align="center">{data.date}</TableCell>
                 <TableCell align="center">
                     <Button variant="outlined" onClick={() => handleFilter("username")}>
-                        {!data.data.buyer_status ? "not completed" : "true"}
+                        {!data.buyer_status ? "not completed" : "true"}
                     </Button>
                 </TableCell>
             </>
@@ -61,28 +63,38 @@ const Orders = () => {
         fetchOrderDetials()
     }, [])
 
+
     return (
         <>
             <Header />
             <Container style={{ maxWidth: "1500px", padding: "2rem 0rem 1.5rem 0rem" }}>
                 <DataTableMaterial
                     tableHeading={
-                        ["Seller", "Amount", "Delivery time", "date",  "Mark as completed"]
+                        ["Seller", "Amount", "Delivery time", "date", "Mark as completed"]   // headline of the table
                     }
-                    title={"Orders"}
-                    datas={orders}
-                    RowComponent={ShowOrderDetails}
-                    selectTagFileringItems={
-                        ["Seller", "Amount"]
-                    }
-                    filterFunc={(type, value) => {
+                    lengthOfPagination={Math.ceil(orders.length / 6)}  // length of pagiantion is the lenth of data / 6
+                    title={"Orders"}                                   // title of the page
+                    page={page}                                        // current pagination no
+                    setPage={setPage}                                  // setState of pagination
+                    datas={orders.slice(6 * page - 6, 6 * page)}       // data map in table. 6 is the pagination limit in the page
+                    RowComponent={ShowOrderDetails}                    // this is each row. this funtion called as row and pass data to it
+                    selectTagFileringItems={["Seller", "Amount"]}      // filter option in the page. this items are showed inside the select tag
+                    filterFunc={(type, value) => {                     // filter funtion takes 2 arg. type is the selected  item value is the value entered
 
-                        if (type == "Seller") setOrders(backupOrders.filter(data => data.package_id.service_id.user.username.startsWith(value)));
+                        if (type == "Seller") {                        // according to the input write  different filtering logic the set to setOrder
+                            setOrders(
+                                backupOrders.filter(data => data.package_id.service_id.user.username.startsWith(value))
+                            )
+                        }
+                        else if (type == "Amount") {
+                            setOrders(backupOrders.filter(data => data.payment_id.amount == value))
+                        }
 
-                        if (type == "Amount") setOrders(backupOrders.filter(data => data.data.package_id.price.startsWith(value)));
+                        if (!value) {
+                            setOrders(backupOrders)
+                        }
 
-                    }
-                    }
+                    }}
 
                 />
             </ Container>

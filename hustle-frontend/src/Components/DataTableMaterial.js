@@ -16,7 +16,13 @@ import SkeltonLoadinAnimation from './SkeltonLoadinAnimation';
 
 
 
-const DataTableMaterial = ({ tableHeading, title, datas, RowComponent, selectTagFileringItems, filterFunc }) => {
+const DataTableMaterial = ({ tableHeading, title, datas, RowComponent, selectTagFileringItems, filterFunc, lengthOfPagination, page, setPage }) => {
+  // const [page, setPage] = React.useState(0);
+
+  const handlePagination = (event, value) => {
+    setPage(value);
+    console.log(value);
+  };
 
 
   const [orderDirection, setOrderDirection] = useState("asc");
@@ -45,7 +51,7 @@ const DataTableMaterial = ({ tableHeading, title, datas, RowComponent, selectTag
 
         </Select>
         <TextField
-          onChange={(e) => filterFunc(selected, e.target.value)}
+          onInput={(e) => filterFunc(selected, e.target.value)}
           style={{ marginLeft: "10px" }}
           id="outlined-basic"
           label="Search"
@@ -56,21 +62,26 @@ const DataTableMaterial = ({ tableHeading, title, datas, RowComponent, selectTag
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
 
-          {/* table heading */}
+          {/* ===============  table heading start =============== */}
           <TableHead>
             <TableRow>
-              {tableHeading && tableHeading.map((data, index) => <TableCell key={index} align="center">{data}</TableCell>)}
+              {tableHeading && tableHeading.map((data, index) =>
+                <TableCell key={index} align="center">{data}</TableCell>)}
             </TableRow>
           </TableHead>
+          {/* ===============  table heading ends =============== */}
 
           <TableBody>
 
-            {/* ============ Rows ============ */}
-            {datas.map((data) => (
+            {/* =============== table rows start =============== */}
+            {datas.map((data, index) => (
+
               <TableRow key={data.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <RowComponent data={data} />
+                <RowComponent data={data} index={index} />
               </TableRow>
+
             ))}
+            {/* =============== table Rows ends =============== */}
 
           </TableBody>
 
@@ -79,7 +90,7 @@ const DataTableMaterial = ({ tableHeading, title, datas, RowComponent, selectTag
         {datas.length == 0 && (<SkeltonLoadinAnimation />)}
 
         <div style={{ display: "flex", justifyContent: "center", padding: "19px" }}>
-          <Pagination count={5} color="secondary" />
+          <Pagination page={page} onChange={handlePagination} count={lengthOfPagination} color="secondary" />
         </div>
       </TableContainer>
     </>

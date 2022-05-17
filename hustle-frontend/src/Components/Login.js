@@ -1,9 +1,11 @@
 import axios from 'axios';
 import * as Yup from "yup";
+import { Link } from "react-router-dom"
 import useAxios from '../Axios/useAxios';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
+import { LOGIN_URL } from '../Utils/Urls';
 import { red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import React, { Fragment, useEffect } from 'react'
@@ -15,8 +17,6 @@ import DialogContent from '@mui/material/DialogContent';
 import { Paper, Box, Grid, Typography } from "@mui/material";
 import { setUserStatus } from '../Redux/Actions/token.action';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Link } from "react-router-dom"
-import { LOGIN_URL } from '../Utils/Urls';
 
 
 
@@ -108,13 +108,24 @@ const Signup = ({ open, setOpen }) => {
                                 </Grid>
                             </>
                         </Grid>
+                        
                         <Box mt={3} textAlign='center'>
-                            <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
+                            <Button variant="contained"
+                                color="primary"
+                                onClick={handleSubmit(onSubmit)}
+                            >
                                 Register
                             </Button>
                         </Box>
 
-                        <Typography color='primary' align='center' mt={2} onClick={() => setOpen({ bool: true, type: "signup" })}>Don't have an account</Typography>
+                        <Typography
+                            color='primary'
+                            align='center'
+                            mt={2}
+                            onClick={() => setOpen({ bool: true, type: "signup" })}
+                        >
+                            Don't have an account
+                        </Typography>
 
                     </Box>
                 </Paper>
