@@ -33,25 +33,25 @@ const MessageCotainer = ({ styles, data }) => {
             status: "declined",
             id: data._id,
             sender: data.sender,
-            currUser: user
+            currUser: user.userId 
         });
 
     }
 
     const handlePayment = async (packageData) => {
         try {
-            const { data } = await useAxios.post("/order/razorpay", packageData, user,)
+            const { data } = await useAxios.post("/order/razorpay", packageData, user.userId,)
 
             // razorpay setup
             makePayment(
-                data, packageData, user,
+                data, packageData, user.userId,
                 () => {
                     Socket.emit('offer_status', {
                         conversation_id: packageData.conversation_id,
                         status: "accepted",
                         id: packageData._id,
                         sender: packageData.sender,
-                        currUser: user
+                        currUser: user.userId
                     });
                 }
             )
@@ -93,7 +93,7 @@ const MessageCotainer = ({ styles, data }) => {
                                 <span>1 deliery</span>
                             </div>
                             {
-                                data.status == "pending" && data.sender != user &&
+                                data.status == "pending" && data.sender != user.userId &&
                                 <div className='offer-buttons'>
                                     <div>
                                         <Button variant="outlined" onClick={_ => handleDeclineOffer(data)}>Decline</Button>
@@ -108,7 +108,7 @@ const MessageCotainer = ({ styles, data }) => {
 
 
                             {
-                                (data.status == "pending" && data.sender == user) &&
+                                (data.status == "pending" && data.sender == user.userId) &&
                                 <div className='offer-buttons'>
                                     <h4 style={{ color: "#4a148c" }}>Offer {data.status}</h4>
                                 </div>

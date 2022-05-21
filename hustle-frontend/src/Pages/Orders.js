@@ -37,10 +37,10 @@ const Orders = () => {
     const ShowOrderDetails = ({ data, index }) => {
         const handleFilter = () => {
             console.log("============= filtering ============");
+            // ORDER COMPLETED  Funtionality
         }
         return (
             <>
-                {/* <TableCell align="center">{7 * page - 7 + index + 1}</TableCell> */}
                 <TableCell align="center" component="th" scope="data">
                     {data.package_id.service_id.user.username}
                 </TableCell>

@@ -27,8 +27,7 @@ class Order(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     # work completed status
-    buyer_status = models.BooleanField(default=False)
-    seller_status = models.BooleanField(default=False)
+    buyer_completion_status = models.BooleanField(default=False)
 
     buyer_id = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True)

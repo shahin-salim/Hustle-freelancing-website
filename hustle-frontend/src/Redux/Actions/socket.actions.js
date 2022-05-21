@@ -34,7 +34,7 @@ export const socketInstance = () =>
                 })
 
                 // set username with socket io for set user to be online
-                Socket.emit('set_online', { username: user });
+                Socket.emit('set_online', { username: user.userId });
 
             } catch (err) {
                 console.log(err);
@@ -56,7 +56,7 @@ export const contacts = () =>
 
             const response = await axios.get(GET_USERS_IN_CONTACT_URL, {
                 params: {
-                    id: currState.userStatus
+                    id: currState.userStatus.userId
                 }
             })
 
@@ -66,7 +66,7 @@ export const contacts = () =>
 
             // remove current user from the array of object
             datas.map((d) => {
-                if (d.user1.id == currState.userStatus) {
+                if (d.user1.id == currState.userStatus.userId) {
                     delete d.user1
                     newDatas = [...newDatas, { conversation_id: d.id, user: d.user2 }]
                 } else {

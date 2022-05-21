@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from email.mime import base
+
 from django.contrib import admin
 from rest_framework import routers
 from django.urls import path, include
@@ -25,7 +25,7 @@ from services.views import ScopeAndPriceView
 
 # create seller
 seller_router = routers.DefaultRouter()
-seller_router.register(r'seller', SellerView)
+seller_router.register(r'seller', SellerView, basename='')
 
 # create category
 category_router = routers.DefaultRouter()
@@ -35,20 +35,11 @@ category_router.register(r'', CategoryView)
 sub_category = routers.DefaultRouter()
 sub_category.register(r'', SubCategoryView)
 
-# services = routers.DefaultRouter()
-# services.register(r'', ServicesView, basename="services")
-
-# scope_and_price = routers.DefaultRouter()
-# scope_and_price.register(r'', ScopeAndPriceView, basename="")
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-
-    # path('seller/', include('seller.urls')),
-
-    path('seller/', include(seller_router.urls)),
+    path('seller/', include("seller.urls")),
     path('category/', include(category_router.urls)),
     path('subcategory/', include(sub_category.urls)),
     path('services/', include('services.urls')),

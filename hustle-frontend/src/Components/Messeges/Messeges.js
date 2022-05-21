@@ -66,7 +66,7 @@ function Messeges() {
 
     if (typedMessage) {
       dispatch(sendMessages({
-        sender: user,
+        sender: user.userId,
         conversation_id: userListenTo.conversation_id,
         message: typedMessage,
         receiver: userListenTo.user.id
@@ -104,7 +104,7 @@ function Messeges() {
         <div className='show-messeges'>
           {
             userMessages.map((data, index) =>
-              data.sender === user ?
+              data.sender === user.userId ?
 
                 <MessageCotainer
                   key={index}

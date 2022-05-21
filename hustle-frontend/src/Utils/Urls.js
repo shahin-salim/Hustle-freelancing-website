@@ -51,3 +51,6 @@ export const ESTABLISH_CONNECTION = CHAT_SERVER_URL + "establish_connection"
 
 // get conversation id of the chat
 export const GET_OR_CREATE_CONVERSATION_ID_URL = "/chat/"
+
+// create seller
+export const CRUD_SELLER_URL = "/seller/seller/"

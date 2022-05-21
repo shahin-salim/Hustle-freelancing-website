@@ -2,13 +2,15 @@ from .import signals
 from .models import CustomUser
 from rest_framework import status
 from rest_framework.views import APIView
+from services.models import ScopeAndPrice
 from .serializer import CustomUserSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-import json
-from services.models import ScopeAndPrice
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from seller.models import SellerProfile
 
 
 class SignUp(APIView):
@@ -47,7 +49,7 @@ class LogoutView(APIView):
 
 
 #
-class GetUsers(APIView):
+class UserView(APIView):
     """
     get the user details
     """
@@ -97,3 +99,26 @@ def get_routes(request):
         'scope_and_price/'
     ]
     return Response(routes)
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        print(user, "========================== refresh token")
+        seller = SellerProfile.objects.filter(user_id=user)
+        print(seller)
+        if seller:
+            # seller.is_seller = False
+            # seller.save()
+            # print(seller.id)
+            token['seller_id'] = seller[0].id
+        # ...
+
+        return token
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

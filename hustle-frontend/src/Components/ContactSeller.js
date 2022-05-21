@@ -30,13 +30,13 @@ const ContactSeller = ({ open, setOpen }) => {
       // create connection between  peoples.
       const { data } = await useAxios.post(GET_OR_CREATE_CONVERSATION_ID_URL, {
         params: {
-          user1: user, user2: open.otherUser
+          user1: user.userId, user2: open.otherUser
         }
       })
 
       // id of that connected people is used to create messages
       const response = await useAxios.post(SEND_MESSAGES_URL, {
-        sender: user,
+        sender: user.userId,
         conversation_id: data.id,
         message: message,
         receiver: open.otherUser

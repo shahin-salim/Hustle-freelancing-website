@@ -1,79 +1,53 @@
+import { useDispatch, useSelector } from 'react-redux'
 import './Header.css'
-import Modal from "../Modal";
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
-import Input from '@mui/material/Input';
-import Button from '@mui/material/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import Avatar from '@mui/material/Avatar';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import Collapse from '@mui/material/Collapse';
-import Container from '@mui/material/Container';
-import MenuIcon from '@mui/icons-material/Menu';
-import MailIcon from '@mui/icons-material/Mail';
-import SendIcon from '@mui/icons-material/Send';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import ListSubheader from '@mui/material/ListSubheader';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
-import ListItemButton from '@mui/material/ListItemButton';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-
-
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import { logoutTheUser } from '../../Redux/Actions/token.action';
-import { useNavigate } from "react-router-dom";
-
-import Avathar from '../Avathar';
+import Modal from "../Modal"
+import * as React from 'react'
+import Avathar from '../Avathar'
+import Box from '@mui/material/Box'
+import List from '@mui/material/List'
+import Drawer from '@mui/material/Drawer'
+import Collapse from '@mui/material/Collapse'
+import { useNavigate } from "react-router-dom"
+import Container from '@mui/material/Container'
+import MenuIcon from '@mui/icons-material/Menu'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import StarBorder from '@mui/icons-material/StarBorder'
+import ListItemButton from '@mui/material/ListItemButton'
+import { logoutTheUser } from '../../Redux/Actions/token.action'
+import { openModal } from '../../Redux/Actions/SetupModal'
 
 
 
 const ariaLabel = { 'aria-label': 'description' };
 
 const Header = () => {
-
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openAnchorEl = Boolean(anchorEl);
+    const [open, setOpen] = React.useState(false)
+    const userStatus = useSelector(state => state.userStatus)
+    const [state, setState] = React.useState({ left: false, });
+    const [openForm, setOpenForm] = React.useState({ open: true })
 
 
     const handleCloseAnchorEl = () => {
         setAnchorEl(null);
-    };
-    const openAnchorEl = Boolean(anchorEl);
+    }
+
     const handleClickAnchorEl = (event) => {
         setAnchorEl(event.currentTarget);
-    };
+    }
 
     const logoutUser = () => {
         dispatch(logoutTheUser())
     }
 
-    const [open, setOpen] = React.useState(false)
-    const userStatus = useSelector(state => state.userStatus)
-    const [openForm, setOpenForm] = React.useState({ open: true })
-
-
-
-    const [state, setState] = React.useState({
-        left: false,
-    });
     const handleClick = () => {
         setOpen(!open);
     };
@@ -114,7 +88,10 @@ const Header = () => {
 
     return (
         <div>
+
+            {/* ========================================== Modal ======================================== */}
             {openForm.bool && <Modal open={openForm} setOpen={setOpenForm} />}
+            {/* ========================================== Modal ======================================== */}
 
             <Container style={{ maxWidth: "1544px", height: "5rem", width: "100%" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center", height: "100%" }}>
@@ -145,12 +122,41 @@ const Header = () => {
                         <input placeholder='Search' className='item-after-search' style={{ marginLeft: "50px" }} />
                     </div>
                     <div className='item-after-search'>
-                        <span className='navabr-font-color' onClick={()=>navigate("/chat")}>Messages</span>
-                        <span className='navabr-font-color' onClick={()=>navigate("/orders")}>Orders</span>
-                        <span className='navabr-font-color'>Switch to selling</span>
                         {
-                            userStatus ? <Avathar /> : !userStatus && <> <span className='navabr-font-color' onClick={() => setOpenForm({ bool: true, type: "signup" })}>Signup</span>
-                                <span className='navabr-font-color' onClick={() => setOpenForm({ bool: true, type: "login" })}>Login</span></>
+                            userStatus &&
+                            <>
+                                <span className='navabr-font-color' onClick={() => navigate("/chat")}>Messages</span>
+                                <span className='navabr-font-color' onClick={() => navigate("/orders")}>Orders</span>
+
+                                <span className='navabr-font-color'
+                                    onClick={
+                                        () => userStatus.sellerId ?
+                                            navigate("/seller")
+                                            :
+                                            setOpenForm({ bool: true, type: "become_a_seller" })
+                                    }
+                                >
+                                    {userStatus.sellerId ? "Switch to selling" : "Become a seller"}
+                                </span>
+                            </>
+                        }
+                        {
+                            userStatus ? <Avathar /> : !userStatus &&
+                                <>
+                                    <span
+                                        className='navabr-font-color'
+                                        onClick={() => setOpenForm({ bool: true, type: "signup" })}
+                                    >
+                                        Signup
+                                    </span>
+
+                                    <span
+                                        className='navabr-font-color'
+                                        onClick={() => setOpenForm({ bool: true, type: "login" })}
+                                    >
+                                        Login
+                                    </span>
+                                </>
                         }
                     </div>
                 </div>

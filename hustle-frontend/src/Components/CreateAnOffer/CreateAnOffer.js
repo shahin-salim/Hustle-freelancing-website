@@ -44,12 +44,13 @@ const CreateAnOffer = ({ open, setOpen }) => {
     const [validationErrors, setValidationErrors] = useState({})
     const [serviceModalTitle, setServiceModalTitle] = useState("Select Service")
 
-    console.log(selectedPackage);
 
     // handle change in the input field for the negotiation price
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+
+
 
     // feach all services of the user
     const fetchServices = async () => {
@@ -64,6 +65,8 @@ const CreateAnOffer = ({ open, setOpen }) => {
         }
     }
 
+
+
     // get packages details of the selected service
     const handleServicePackages = async (id) => {
         try {
@@ -77,6 +80,8 @@ const CreateAnOffer = ({ open, setOpen }) => {
         setCurrPlace("packages")
     }
 
+
+
     // create offer will send an negotaited for the user in the other end
     const handleCreateOffer = () => {
         console.log(price, '   ', offerDiscription, price);
@@ -84,7 +89,7 @@ const CreateAnOffer = ({ open, setOpen }) => {
             dispatch(sendMessages({
                 ...selectedPackage,
                 price: parseInt(price),
-                sender: user,
+                sender: user.userId,
                 conversation_id: userListenTo.conversation_id,
                 receiver: userListenTo.user.id,
                 discription: offerDiscription
@@ -92,6 +97,8 @@ const CreateAnOffer = ({ open, setOpen }) => {
             setOpen({ bool: false })
         }
     }
+
+    
 
     useEffect(() => {
         fetchServices()
@@ -104,7 +111,7 @@ const CreateAnOffer = ({ open, setOpen }) => {
     return (
         <div className='create-an-offer-main-div'>
             <div>
-                <h2 style={{ textAlign: "center", padding: "0px 190px 0px 190px" }}>{serviceModalTitle}</h2>
+                <h2 style={{ textAlign: "center", padding: "0 8px 0 8px" }}>{serviceModalTitle}</h2>
             </div>
             {
                 currPlace == "service" && <div className='all-services'>

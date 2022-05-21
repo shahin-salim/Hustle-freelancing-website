@@ -47,13 +47,15 @@ const Signup = ({ open, setOpen }) => {
         resolver: yupResolver(validationSchema),
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (datas) => {
         try {
-            const response = await axios.post(LOGIN_URL, data)
-            localStorage.setItem("refreshToken", response.data.refresh)
-            localStorage.setItem("accessToken", response.data.access)
+            const { data } = await axios.post(LOGIN_URL, datas)
+            // localStorage.setItem("refreshToken", response.data.refresh)
+            // localStorage.setItem("accessToken", response.data.access)
+            console.log(data);
+
             setOpen({ bool: false, type: "" })
-            dispatch(setUserStatus(true))
+            dispatch(setUserStatus(data.refresh, data.access))
 
         } catch (error) {
             setLoginError(error.response.data.detail);
@@ -108,7 +110,7 @@ const Signup = ({ open, setOpen }) => {
                                 </Grid>
                             </>
                         </Grid>
-                        
+
                         <Box mt={3} textAlign='center'>
                             <Button variant="contained"
                                 color="primary"

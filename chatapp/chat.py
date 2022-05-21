@@ -9,20 +9,20 @@ from mongoengine.queryset.visitor import Q
 
 from mongo_pipeline import get_messeges
 
-# this list save all the users socket id and the name if they are online
+# this list save all the user_id with socket id and the name if they are online
 online_users = {}
 
 
 # user esatblish connection with server
 @sio.event
 def connect(sid, environ):
-    print('connect ', sid)
 
     @sio.event
     def disconnect(sid):
         """
-        delete the sid and username from the dictnory
+        delete the sid and username from the dictionary
         """
+
         for i in online_users:
             if online_users[i] == sid:
                 del online_users[i]
@@ -31,7 +31,7 @@ def connect(sid, environ):
     @sio.event
     def set_online(sid, data):
         """
-        set user sid in the dictnory
+        set user sid in the dictionary
         """
 
         online_users[data["username"]] = sid
@@ -39,26 +39,33 @@ def connect(sid, environ):
 
     @sio.event
     async def offer_status(sid, data):
-        """
-        set user sid in the dictnory
-        """
+        """ offer status changed this will appear both the sender and receiver """
 
-        Chat.objects(id=data["id"]["$oid"]).update_one(
-            status=data["status"])
-
+        # change negotation status in database
+        Chat.objects(id=data["id"]["$oid"]).update_one(status=data["status"])
         chat_as_Json = Chat.objects(id=data["id"]["$oid"])[0].to_json()
 
+        # sender and receiver is online emit the change
         if data["sender"] in online_users:
-            await sio.emit('offer_status', {'message': chat_as_Json}, room=online_users[data["sender"]])
+            await sio.emit(
+                'offer_status',
+                {'message': chat_as_Json},
+                room=online_users[data["sender"]]
+            )
+
         if data["currUser"] in online_users:
-            await sio.emit('offer_status', {'message': chat_as_Json}, room=online_users[data["currUser"]])
+            await sio.emit(
+                'offer_status',
+                {'message': chat_as_Json},
+                room=online_users[data["currUser"]]
+            )
 
 
+# get the messages of the selected coversation
 async def _messages(request):
-    data = get_messeges(request)
-    return web.json_response(
-        {"messages": data}
-    )
+    return web.json_response({
+        "messages": get_messeges(request)
+    })
 
 
 # send message to users
@@ -66,15 +73,16 @@ async def _send_messege(request):
     data = await request.json()
     params = dict(data)
 
+    # common chat
     try:
-        # common chat
         chat = Chat(
             conversation_id=params["conversation_id"],
             sender=params["sender"],
             message=params['message']
         ).save()
+
+    # seller make negotiation
     except:
-        # seller make negotiation 
         chat = Chat(
             conversation_id=params["conversation_id"],
             sender=params['sender'],
@@ -89,9 +97,9 @@ async def _send_messege(request):
     if params['receiver'] in online_users:
         await sio.emit('messages', {'message': chat.to_json()}, room=online_users[params['receiver']])
 
-    return web.json_response(
-        {"messages": chat.to_json()}
-    )
+    return web.json_response({
+        "messages": chat.to_json()
+    })
 
 
 url = cors.add(app.router.add_resource("/messages"))

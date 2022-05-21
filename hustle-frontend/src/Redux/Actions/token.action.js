@@ -5,12 +5,22 @@ import { decodeJwtToken } from "../../Utils/decode.jwt"
 
 // set user id in the redux user status state 
 // in the time of login and register
-export const setUserStatus = (status) => async (dispatch, getState) => {
-    dispatch({
-        type: SET_USER_STATUS,
-        payload: decodeJwtToken()
-    })
-}
+export const setUserStatus = (refresh, access) =>
+    async (dispatch, getState) => {
+        console.log("------------------------------------------");
+        console.log(refresh, "    ", access);
+
+        localStorage.setItem("refreshToken", refresh)
+        localStorage.setItem("accessToken", access)
+        console.log("------------------------------------------");
+
+        console.log(decodeJwtToken());
+
+        dispatch({
+            type: SET_USER_STATUS,
+            payload: decodeJwtToken()
+        })
+    }
 
 
 // user logout set redux state userStatus as false 
@@ -30,3 +40,4 @@ export const logoutTheUser = () => async (dispatch, getState) => {
     }
 
 }
+

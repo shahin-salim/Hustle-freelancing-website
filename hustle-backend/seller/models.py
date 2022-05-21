@@ -7,10 +7,15 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class SellerProfile(models.Model):
-    language = models.CharField(max_length=100)
-    occupation = models.CharField(max_length=100, null=True)
-    education = models.CharField(max_length=100, null=True)
-    website = models.CharField(max_length=100, null=True)
-    user_id = models.OneToOneField(
-        CustomUser, on_delete=models.CASCADE)
+    """
+    details about the seller for become an seller
+    """
+
+    description = models.TextField(default="a")
+    languages = ArrayField(models.CharField(max_length=100))
     skills = ArrayField(models.CharField(max_length=100))
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    # country = models.CharField(max_length=100)
+    # occupation = models.CharField(max_length=100, null=True)
+    # education = models.CharField(max_length=100, null=True)
+    # website = models.CharField(max_length=100, null=True)

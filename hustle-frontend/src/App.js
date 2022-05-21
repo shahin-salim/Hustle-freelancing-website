@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { chatsNegotiationStatus } from './Redux/Actions/Chat.Actions';
 import { contacts, receivedMessage, setSioInstance } from './Redux/Actions/socket.actions';
 import Orders from './Pages/Orders';
+import Modal from "./Components/Modal"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -33,7 +34,7 @@ const App = () => {
       try {
 
         if (!Socket) {
-          
+
           const Socket = io(CHAT_SERVER_URL);    // connect to socket io
 
           // set socket io instance in the redux state
@@ -41,7 +42,7 @@ const App = () => {
         }
 
         // set username with socket io for set user to be online
-        Socket && Socket.emit('set_online', { username: userStatus }); 
+        Socket && Socket.emit('set_online', { username: userStatus.userId });
 
 
         // listen message event . this message gives the messages emitted using this user if
@@ -67,19 +68,26 @@ const App = () => {
     }
   }, [userStatus, userListenTo])
 
+  const modalConf = useSelector(state => state.modalConf)
+
 
   return (
     <>
+
       <BrowserRouter>
         <Routes>
+
 
           <Route exact path="/" element={<Home />} />
           <Route path="/service/:id" element={<ProductDetail />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/orders" element={<Orders />} />
 
-          {/* show messages in smalll screen devices only if the size of window is less tha 700 this route will work */}
+          {/* -----------------------------------------------------------------------
+              show messages in smalll screen devices only if the size of window is less
+              than 700 this route will work */}
           {screenSize < 700 && <Route path="/messages" element={<Messeges />} />}
+          {/* ----------------------------------------------------------------------- */}
 
         </Routes>
       </BrowserRouter>
